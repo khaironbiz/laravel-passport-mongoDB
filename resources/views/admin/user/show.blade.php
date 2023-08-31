@@ -71,6 +71,11 @@
                                                     <td>:</td>
                                                     <td>{{ $users['warga_negara'] }}</td>
                                                 </tr>
+                                                <tr>
+                                                    <th>Tanggal Daftar</th>
+                                                    <td>:</td>
+                                                    <td>{{ $users['created_at'] }}</td>
+                                                </tr>
                                             </table>
 
                                         </div>
