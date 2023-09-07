@@ -199,9 +199,14 @@ class AuthController extends Controller
                 session()->flash('danger', 'OTP Kadaluarsa');
                 return redirect()->back()->withInput();
             }else{
-                $post_data  = $request->all();
+                $post_data  = [
+                    'otp'       => $request->otp,
+                    'username'  => $request->username,
+                    'password'  => $request->password,
+                    'password_confirmation' => $request->password_confirmation,
+                ];
                 $api_ext    = env('APP_API_EXTERNAL');
-                $url        = $api_ext."/auth/resetpassword";
+                $url        = $api_ext."/v1/auth/resetpassword";
                 $client     = new Client();
                 $response   = $client->put($url, [
                     'form_params' => $post_data
