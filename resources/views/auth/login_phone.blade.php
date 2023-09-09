@@ -12,7 +12,7 @@
                 @elseif (session('success') != null)
                     <p class="login-box-msg text-success">{{ session('success') }}</p>
                 @else
-                    <p class="login-box-msg">Sign in to start your session</p>
+                    <p class="login-box-msg">Passcode will be sent to WhatsApp</p>
                 @endif
                 <form action="{{ route('auth.postLoginPhone') }}" method="post">
                     @csrf

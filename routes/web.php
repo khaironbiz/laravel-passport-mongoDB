@@ -1,12 +1,12 @@
 <?php
 
 
-use App\Http\Controllers\Web\CodeMasterController;
-use App\Http\Controllers\Web\CustomerController;
 use App\Http\Controllers\Web\AnswerController;
 use App\Http\Controllers\Web\AuthController;
 use App\Http\Controllers\Web\BaseLineController;
+use App\Http\Controllers\Web\CodeMasterController;
 use App\Http\Controllers\Web\CounselorController;
+use App\Http\Controllers\Web\CustomerController;
 use App\Http\Controllers\Web\DashboardController;
 use App\Http\Controllers\Web\DrugController;
 use App\Http\Controllers\Web\EducationController;
@@ -178,6 +178,7 @@ Route::post('education/{id}', [EducationController::class, 'update'])->name('edu
 Route::post('education/{id}/delete', [EducationController::class, 'destroy'])->name('education.destroy');
 
 Route::get('/customers',[CustomerController::class, 'index'])->name('customers')->middleware('auth');
+Route::get('/customer',[CustomerController::class, 'create'])->name('customers.create')->middleware('auth');
 Route::post('/customers',[CustomerController::class,'store'])->name('customers.store');
 Route::get('/customers/{id}',[CustomerController::class,'show'])->name('customers.show');
 
@@ -198,3 +199,5 @@ Route::get('baseLine', [BaseLineController::class, 'index'])->name('baseLine.ind
 Route::get('files', [FileController::class, 'index'])->name('file.index');
 
 Route::get('dashboard', [DashboardController::class, 'index'])->name('dashboard.index');
+
+

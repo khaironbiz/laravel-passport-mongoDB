@@ -9,7 +9,7 @@
                         <b>{{ $title }}</b>
                     </div>
                     <div class="card-body">
-                        <a href="" class="btn btn-sm btn-primary mb-2">Add Data</a>
+                        <a href="{{ route('customers.create') }}" class="btn btn-sm btn-primary mb-2">Add Data</a>
                         <table class="table table-sm table-striped" id="example1">
                             <thead>
                             <th>#</th>

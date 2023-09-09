@@ -48,7 +48,7 @@ $foto = \Illuminate\Support\Facades\Auth::user()['foto']
                         <p>My Profile<span class="right badge badge-danger">New</span></p>
                     </a>
                 </li>
-                @if(Auth::user()['tbc']==true)
+                @if(Auth::user()['tbc']==true | Auth::user()['counselor']==true )
                     <li class="nav-item">
                         <a href="{{ route('message.index') }}" class="nav-link">
                             <i class="nav-icon fas fa-calculator"></i>
@@ -110,6 +110,35 @@ $foto = \Illuminate\Support\Facades\Auth::user()['foto']
                                 <a href="{{ route('drugs.index') }}" class="nav-link">
                                     <i class="far fa-circle nav-icon"></i>
                                     <p>Daftar Obat</p>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="" class="nav-link">
+                                    <i class="far fa-circle nav-icon"></i>
+                                    <p>Jenis Obat</p>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="" class="nav-link">
+                                    <i class="far fa-circle nav-icon"></i>
+                                    <p>Sediaan Obat</p>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                @endif
+                @if(Auth::user()['level'] == "petugas")
+                    <li class="nav-header">Admin</li>
+                    <li class="nav-item">
+                        <a href="#" class="nav-link">
+                            <i class="nav-icon far fa-envelope"></i>
+                            <p>Admin<i class="fas fa-angle-left right"></i></p>
+                        </a>
+                        <ul class="nav nav-treeview">
+                            <li class="nav-item">
+                                <a href="{{ route('customers') }}" class="nav-link">
+                                    <i class="far fa-circle nav-icon"></i>
+                                    <p>Customers</p>
                                 </a>
                             </li>
                             <li class="nav-item">
