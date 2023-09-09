@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Personal_access_token;
 use App\Models\User;
 use GuzzleHttp\Client;
+use GuzzleHttp\Exception\RequestException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
@@ -91,18 +92,54 @@ class AuthController extends Controller
             $url        = $api_ext."/v1/auth/loginPhone";
             $header     = [];
             $client     = new Client();
-            $response   = $client->post($url, [
-                'headers' => $header,
-                'form_params' => $post
-            ]);
-            $data = json_decode($response->getBody(), true);
-//            dd($data);
-            if($data['status_code'] != 200){
-                session()->flash('danger', $data['message']);
-                return redirect()->back()->withInput();
+            try {
+                $response   = $client->post($url, [
+                    'headers'       => $header,
+                    'form_params'   => $post
+                ]);
+
+                // Periksa status kode respons
+                if ($response->getStatusCode() === 200) {
+
+                    // Respons sukses, lakukan sesuatu dengan data
+                    $data = json_decode($response->getBody(), true);
+//                    dd($data);
+                    $data_token     = $data['data']['token']['code'];
+                    $encryptedData  = encrypt($data_token);
+                    session(['web_token' => $encryptedData]);
+                    $user = User::find($data['data']['token']['user_id']);
+                    Auth::login($user);
+                    $request->session()->regenerate();
+                    return redirect()->route('profile.index');
+                } elseif ($response->getStatusCode() === 404) {
+                    echo "Not Found";
+                    // Respons dengan status 404 (Not Found)
+                    // Handle kesalahan 404 di sini, misalnya, kembalikan pesan kesalahan atau lakukan tindakan lain yang sesuai
+                } else {
+                    // Respons dengan status kode lain
+                    // Handle kesalahan lainnya di sini
+                }
+            } catch (RequestException $e) {
+                // Tangani kesalahan permintaan seperti koneksi bermasalah atau API tidak tersedia
+                if ($e->hasResponse()) {
+                    // Ada respons dari API
+                    $response = $e->getResponse();
+                    if ($response->getStatusCode() === 404) {
+                        $data = json_decode($response->getBody(), true);
+                        session()->flash('danger', $data['message']);
+                        return redirect()->back()->withInput();
+                    } else {
+                        // Handle kesalahan lainnya di sini
+                    }
+                } else {
+                    // Tangani kesalahan ketika tidak ada respons dari API
+                }
             }
-            session()->flash('success', 'Berhasil Login');
-            return redirect()->route('auth.login.phone.otp')->withInput();
+
+
+
+
+
         }
 
 
