@@ -66,10 +66,10 @@ class AuthController extends Controller
             return redirect()->route('profile.index');
         }else{
             session()->flash('gagal_login', 'Wrong username or password');
-
             return redirect()->route('auth.login')->withInput();
         }
     }
+
     public function register()
     {
         return view('auth.register');

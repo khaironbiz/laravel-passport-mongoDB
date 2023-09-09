@@ -48,6 +48,8 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 Route::get('/notAuthorized',[AuthController::class,'notAuthorised'])->name('notAuthorised');
 Route::post('/v1/auth/login',[AuthController::class,'login']);
+Route::post('/v1/auth/passcode/request',[AuthController::class,'passcode_request']);
+Route::post('/v1/auth/loginPhone',[AuthController::class,'login_phone']);
 Route::post('/v1/auth/login/petugas',[AuthController::class,'login_petugas']);
 Route::delete('/v1/auth/logout',[AuthController::class,'logout'])->middleware('auth:sanctum');
 Route::delete('/v1/auth/logout/all',[AuthController::class,'logoutAll'])->middleware('auth:sanctum');

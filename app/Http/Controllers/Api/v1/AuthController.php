@@ -222,6 +222,110 @@ class AuthController extends Controller
         }
     }
 
+    public function passcode_request(Request $request){
+        $validator = Validator::make($request->all(),[
+            'nomor_telepon' => ['required']
+        ]);
+        if ($validator->fails()) {
+            $status_code    = 422;
+            $message        = "Gagal Validasi";
+            $data = [
+                'errors' => $validator->errors(),
+            ];
+        }else{
+            $user = User::where('kontak.nomor_telepon', $request->nomor_telepon)->first();
+            if($user != null){
+                $otp        = rand(111111,999999);
+                $update_user = $user->update([
+                    'nomor_telepon' => $request->nomor_telepon,
+                    'passcode'      => $otp
+                ]);
+                $message        = 'Passcode : '.$otp;
+                $sending_wa     = $this->sending_whatsapp($request->nomor_telepon, $message);
+                $status_code    = 200;
+                $message        = "success";
+                $data = [
+                    'user' => $user,
+                ];
+            }else{
+                $status_code    = 404;
+                $message        = "Not Found";
+                $data = [
+                    'user' => $user,
+                ];
+            }
+        }
+        $data_json = [
+            "status_code"   => $status_code,
+            "message"       => $message,
+            "data"          => $data
+        ];
+        return response()->json($data_json, $status_code);
+
+    }
+
+    public function login_phone(Request $request)
+    {
+        $validator = Validator::make($request->all(),[
+            'nomor_telepon' => ['required'],
+            'otp'           => ['required'],
+        ]);
+        if ($validator->fails()) {
+            $status_code    = 422;
+            $message        = "Gagal Validasi";
+            $data = [
+                'errors' => $validator->errors(),
+            ];
+        }else{
+            $user = User::where([
+                'nomor_telepon' => $request->nomor_telepon,
+                'passcode'      => (int)$request->otp
+            ]);
+            $data_user = $user->first();
+            if($user->count() < 1){
+                $status_code    = 404;
+                $message        = "OTP or Phone is wrong";
+                $data           = [
+                    'count'     => $user->count(),
+                    'post'      => [
+                        'nomor_telepon' => $request->nomor_telepon,
+                        'otp'           => $request->otp
+                    ]
+                ];
+
+            }else{
+                $token_name = 'auth_token';
+                $token      =  $data_user->createToken($token_name)->plainTextToken;
+                $data_token = [
+                    "token"         => [
+                        "name"      => $token_name,
+                        "code"      => $token,
+                        "type"      => 'Bearer',
+                        "user_id"   => $data_user->id
+                    ],
+                    'time'          => time()
+                ];
+                $remove_passcode = $data_user->update(['passcode'=>'']);
+                $status_code    = 200;
+                $message        = "success";
+                $data           = $data_token;
+
+            }
+        }
+        $data_json = [
+            "status_code"   => $status_code,
+            "message"       => $message,
+            "data"          => $data
+        ];
+        return response()->json($data_json, $status_code);
+
+
+
+
+
+
+    }
+
     /**
      * Remove the specified resource from storage.
      *

@@ -45,25 +45,38 @@ class MeetingController extends Controller
             $time_start = $request->time_start;
             $host       = $request->host;
             $master_zoom = ZoomMaster::where('counselor', $host)->first();
+//            dd($master_zoom);
+            $zoom       = [
+                'id'        => $master_zoom->_id,
+                'room_name' => $master_zoom->room_name
+            ];
             $user_host  = User::find($host);
             $time       = strtotime($request->date_start." ".$request->time_start);
             $date_time  = date('Y-m-d H:i:s', $time);
+            $id_baru    = uniqid();
             $data_meeting = [
+                "_id"           => $id_baru,
                 "topic"         => $topic,
                 "date_start"    => $date_start,
                 "time_start"    => $time_start,
                 "time"          => $time,
                 "date_time"     => $date_time,
                 "host"          => $host,
-                "attendee"      => Auth::id()
+                "attendee"      => Auth::id(),
+                "zoom"          => $zoom,
+                "id_meeting"    => $master_zoom->id_meeting,
+                "pass_code"     => $master_zoom->pass_code,
+                "url"           => $master_zoom->url
             ];
             $meeting    = new Meeting();
             $create     = $meeting->create($data_meeting);
             if($create){
+                $meeting_counselor = Meeting::where('host', $host)->latest();
                 $receiver   = $user_host->kontak['nomor_telepon'];
                 $message    = "Hallo ".$user_host->nama['nama_depan']."\r\n".
                                 "Terdapat $topic pada ".$date_time ."\r\n".
-                                "Silahkan validasi pertemuan ini pada E-TBC apps";
+                                "Zoom : $master_zoom->url"."\r\n".
+                                "id : $id_baru";
                 //sending whatsapp
                 $sending_wa = $this->sending_whatsapp($receiver, $message);
                 session()->flash('success', 'E Konsultasi TBC telah diajukan');
@@ -175,6 +188,23 @@ class MeetingController extends Controller
         }
     }
     public function meeting($id){
+        $meeting    = Meeting::find($id);
+        $host       = User::find($meeting->host);
+        $attendee   = User::find($meeting->attendee);
+        $peserta    = [
+            'host'  => $host,
+            'attendee'  => $attendee
+        ];
+        $data = [
+            "title"     => "Meeting",
+            "class"     => "Meeting",
+            "sub_class" => "Show",
+            "content"   => "layout.admin",
+            "meeting"   => $meeting,
+            "peserta"   => $peserta
+        ];
+
+        return view('user.meeting.show', $data);
 
     }
     private function sending_whatsapp($receiver, $message)
