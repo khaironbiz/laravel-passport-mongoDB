@@ -24,6 +24,89 @@ class AuthController extends Controller
         $user = Auth::user();
         return view('auth.login');
     }
+    public function login_phone()
+    {
+        $user = Auth::user();
+        return view('auth.login_phone');
+    }
+    public function login_phone_otp()
+    {
+        $user = Auth::user();
+        return view('auth.login_phone_otp');
+    }
+    public function postLoginPhone(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'nomor_telepon'        => 'required|numeric'
+        ]);
+        if ($validator->fails()) {
+            return redirect()->route('auth.login.phone')
+                ->withErrors($validator)
+                ->withInput();
+        }
+        $post = [
+            'nomor_telepon'  => $request->nomor_telepon
+        ];
+        $user = User::where('kontak.nomor_telepon', $request->nomor_telepon);
+        if($user->count()<1){
+            session()->flash('danger', 'Wrong phone number !!!!');
+            return back()->withInput();
+        }else{
+            $api_ext    = env('APP_API_EXTERNAL');
+            $url        = $api_ext."/v1/auth/passcode/request";
+            $header     = [];
+            $client     = new Client();
+            $response   = $client->post($url, [
+                'headers' => $header,
+                'form_params' => [
+                    'nomor_telepon'  => $request->nomor_telepon,
+                ]
+            ]);
+            $data = json_decode($response->getBody(), true);
+//            dd($data);
+            if($data['status_code'] != 200){
+                session()->flash('danger', $data['message']);
+                return redirect()->back()->withInput();
+            }
+            session()->flash('success', 'Input OTP yang dikirim ke whatsapp');
+            return redirect()->route('auth.login.phone.otp')->withInput();
+        }
+    }
+    public function postLoginPhoneOtp(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'nomor_telepon' => 'required|numeric',
+            'otp'           => 'required|numeric'
+        ]);
+        if ($validator->fails()) {
+            return redirect()->route('auth.login.phone')
+                ->withErrors($validator)
+                ->withInput();
+        }else{
+            $post = [
+                'nomor_telepon' => $request->nomor_telepon,
+                'otp'           => $request->otp,
+            ];
+            $api_ext    = env('APP_API_EXTERNAL');
+            $url        = $api_ext."/v1/auth/loginPhone";
+            $header     = [];
+            $client     = new Client();
+            $response   = $client->post($url, [
+                'headers' => $header,
+                'form_params' => $post
+            ]);
+            $data = json_decode($response->getBody(), true);
+//            dd($data);
+            if($data['status_code'] != 200){
+                session()->flash('danger', $data['message']);
+                return redirect()->back()->withInput();
+            }
+            session()->flash('success', 'Berhasil Login');
+            return redirect()->route('auth.login.phone.otp')->withInput();
+        }
+
+
+    }
     public function postLogin(Request $request)
     {
         $validator = Validator::make($request->all(), [
@@ -338,5 +421,20 @@ class AuthController extends Controller
         }else{
             return redirect()->route('auth.login');
         }
+    }
+    private function sending_whatsapp($receiver, $message)
+    {
+        $url_sending_wa = "https://wa.atm-sehat.com/send";
+        $header         = [];
+        $client         = new Client();
+        $sending        = $client->post($url_sending_wa, [
+            'headers' => $header,
+            'form_params'   => [
+                'number'    => '6281213798746',
+                'message'   => $message,
+                'to'        => '62'.(int) $receiver,
+                'type'      => 'chat'
+            ]
+        ]);
     }
 }

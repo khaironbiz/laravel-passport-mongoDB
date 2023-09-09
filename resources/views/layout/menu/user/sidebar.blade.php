@@ -41,7 +41,6 @@ $foto = \Illuminate\Support\Facades\Auth::user()['foto']
             <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
                 <!-- Add icons to the links using the .nav-icon class
                      with font-awesome or any other icon font library -->
-
                 <li class="nav-item">
                     <a href="{{ route('profile.index') }}" class="nav-link">
 
@@ -49,27 +48,29 @@ $foto = \Illuminate\Support\Facades\Auth::user()['foto']
                         <p>My Profile<span class="right badge badge-danger">New</span></p>
                     </a>
                 </li>
+                @if(Auth::user()['tbc']==true)
+                    <li class="nav-item">
+                        <a href="{{ route('message.index') }}" class="nav-link">
+                            <i class="nav-icon fas fa-calculator"></i>
+                            <p>
+                                Messages
+                            </p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="{{ route('questionnaire.publish') }}" class="nav-link">
+                            <i class="nav-icon fas fa-calculator"></i>
+                            <p>Kuesioner</p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="{{ route('medication.mine') }}" class="nav-link">
+                            <i class="nav-icon fas fa-calculator"></i>
+                            <p>Medication</p>
+                        </a>
+                    </li>
+                @endif
 
-                <li class="nav-item">
-                    <a href="{{ route('message.index') }}" class="nav-link">
-                        <i class="nav-icon fas fa-calculator"></i>
-                        <p>
-                            Messages
-                        </p>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a href="{{ route('questionnaire.publish') }}" class="nav-link">
-                        <i class="nav-icon fas fa-calculator"></i>
-                        <p>Kuesioner</p>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a href="{{ route('medication.mine') }}" class="nav-link">
-                        <i class="nav-icon fas fa-calculator"></i>
-                        <p>Medication</p>
-                    </a>
-                </li>
                 @if(Auth::user()['counselor']==true)
                     <li class="nav-item">
                         <a href="{{ route('questionnaire.index') }}" class="nav-link">
@@ -95,9 +96,7 @@ $foto = \Illuminate\Support\Facades\Auth::user()['foto']
                             <p>My Patient</p>
                         </a>
                     </li>
-
                     <li class="nav-header">Medication</li>
-
                     <li class="nav-item">
                         <a href="#" class="nav-link">
                             <i class="nav-icon far fa-envelope"></i>
@@ -127,7 +126,6 @@ $foto = \Illuminate\Support\Facades\Auth::user()['foto']
                             </li>
                         </ul>
                     </li>
-
                 @endif
 
 
