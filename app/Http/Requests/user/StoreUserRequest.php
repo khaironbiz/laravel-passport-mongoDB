@@ -27,9 +27,9 @@ class StoreUserRequest extends FormRequest
             'nama_depan'        => 'required|min:3',
             'nama_belakang'     => 'required|min:3',
             'gender'            => 'required',
-            'nik'               => 'required|numeric|digits:16||unique:users,nik',
-            'nomor_telepon'     => 'required|numeric|digits_between:10,13||unique:users,nomor_telepon',
-            'email'             => 'required|email:rfc,dns|unique:users,email',
+            'nik'               => 'required|numeric|digits:16|unique:users,nik',
+            'nomor_telepon'     => 'required|numeric|digits_between:10,13|unique:users,kontak.nomor_telepon',
+            'email'             => 'required|email:rfc,dns|unique:users,kontak.email',
             'place_birth'       => 'required|alpha',
             'birth_date'        => 'required|date'
         ];

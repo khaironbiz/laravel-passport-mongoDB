@@ -25,6 +25,7 @@ use App\Http\Controllers\Web\ProfileController;
 use App\Http\Controllers\Web\QuestionController;
 use App\Http\Controllers\Web\QuestionnaireController;
 use App\Http\Controllers\Web\ReligionController;
+use App\Http\Controllers\Web\ServiceController;
 use App\Http\Controllers\Web\StatusMenikahController;
 use App\Http\Controllers\Web\UserController;
 use App\Http\Controllers\Web\ZoomMasterController;
@@ -136,15 +137,17 @@ Route::post('question/store', [QuestionController::class, 'store'])->name('quest
 Route::post('answer/store', [AnswerController::class, 'store'])->name('answer.store')->middleware('auth');
 
 
-Route::get('users', [UserController::class,'index'])->name('users.index');
-Route::get('user', [UserController::class,'create'])->name('users.create');
-Route::post('users', [UserController::class,'store'])->name('users.store');
-Route::get('users/{id}', [UserController::class,'show'])->name('users.show');
-Route::get('users/{id}/edit', [UserController::class,'edit'])->name('users.edit');
-Route::post('users/{id}/update', [UserController::class,'update'])->name('users.update');
-Route::post('users/{id}/blokir', [UserController::class,'blokir'])->name('users.blokir');
-Route::post('users/{id}/delete', [UserController::class,'destroy'])->name('users.destroy');
-Route::get('users/{properti}/{value}', [UserController::class,'kode'])->name('users.kode');
+Route::get('users', [UserController::class,'index'])->name('users.index')->middleware('auth');
+Route::get('user', [UserController::class,'create'])->name('users.create')->middleware('auth');
+Route::post('users', [UserController::class,'store'])->name('users.store')->middleware('auth');
+Route::get('users/{id}', [UserController::class,'show'])->name('users.show')->middleware('auth');
+Route::get('users/{id}/edit', [UserController::class,'edit'])->name('users.edit')->middleware('auth');
+Route::post('users/{id}/update', [UserController::class,'update'])->name('users.update')->middleware('auth');
+Route::post('users/{id}/blokir', [UserController::class,'blokir'])->name('users.blokir')->middleware('auth');
+Route::post('users/{id}/delete', [UserController::class,'destroy'])->name('users.destroy')->middleware('auth');
+Route::get('users/{properti}/{value}', [UserController::class,'kode'])->name('users.kode')->middleware('auth');
+Route::get('users/find/all/create', [UserController::class,'find'])->name('users.find')->middleware('auth');
+
 
 
 Route::get('marital-status', [StatusMenikahController::class,'index'])->name('marital_status');
@@ -205,5 +208,13 @@ Route::get('files', [FileController::class, 'index'])->name('file.index');
 Route::get('dashboard', [DashboardController::class, 'index'])->name('dashboard.index');
 
 Route::get('admission/{id}', [AdmissionController::class, 'index'])->name('admission.index');
+Route::get('admission/{id_user}/{id_customer}', [AdmissionController::class, 'kunjungan'])->name('admission.create');
+Route::post('admission/store', [AdmissionController::class, 'store'])->name('admission.store');
 
-
+Route::get('services', [ServiceController::class, 'index'])->name('service.index');
+Route::get('services/{id}/faskes', [ServiceController::class, 'faskes'])->name('service.faskes');
+Route::get('service', [ServiceController::class, 'create'])->name('service.create');
+Route::post('service', [ServiceController::class, 'store'])->name('service.store');
+Route::get('service/{id}/show', [ServiceController::class, 'show'])->name('service.create');
+Route::get('service/{id}/edit', [ServiceController::class, 'edit'])->name('service.edit');
+Route::post('service/{id}/update', [ServiceController::class, 'update'])->name('service.update');

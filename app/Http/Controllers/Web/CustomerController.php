@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Web;
 
 use App\Http\Controllers\Controller;
+use App\Models\admission;
 use App\Models\Customer;
 use App\Models\Kit;
 use App\Models\Postal;
@@ -43,7 +44,7 @@ class CustomerController extends Controller
 
     public function store(Request $request){
         $validator = Validator::make($request->all(), [
-            'code'      => 'required',
+            'code'      => 'required|unique:customers,code',
             'name'      => 'required',
             'nik_pic'   => 'required',
             'hp'        => 'required',
@@ -121,13 +122,15 @@ class CustomerController extends Controller
     {
         $customer   = Customer::where('_id', $id)->first();
         $kits       = Kit::where('owner.code', $customer->code)->get();
+        $admission  = admission::where('id_faskes', $id)->get();
         $data = [
             "title"         => "Detail Customer",
             "class"         => "customer",
             "sub_class"     => "detail",
             "content"       => "layout.admin",
             "customer"      => $customer,
-            "kits"          => $kits
+            "kits"          => $kits,
+            "admission"     => $admission
         ];
 
         return view('user.customer.show', $data);

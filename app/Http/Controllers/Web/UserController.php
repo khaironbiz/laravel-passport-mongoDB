@@ -85,10 +85,13 @@ class UserController extends Controller
             'nama_belakang' => $request->nama_belakang,
             'gender'        => $request->gender,
             'nomor_telepon' => $request->nomor_telepon,
-            'nik'           => $request->nik,
-            'tempat_lahir'  => $request->tempat_lahir,
-            'tanggal_lahir' => $request->tanggal_lahir
+            'email'         => $request->email,
+            'nik'           => (int) $request->nik,
+            'tempat_lahir'  => $request->place_birth,
+            'tanggal_lahir' => $request->birth_date,
+            'password'      => 'password'
         ];
+//        dd($post);
         $api_ext        = env('APP_API_EXTERNAL');
         $url            = $api_ext."/v1/auth/register";
         $session_token  = decrypt(session('web_token'));
@@ -110,14 +113,10 @@ class UserController extends Controller
 
             } elseif ($response->getStatusCode() === 404) {
                 echo "Not Found";
-                // Respons dengan status 404 (Not Found)
-                // Handle kesalahan 404 di sini, misalnya, kembalikan pesan kesalahan atau lakukan tindakan lain yang sesuai
             } else {
-                // Respons dengan status kode lain
-                // Handle kesalahan lainnya di sini
+                echo "Lainnya";
             }
         } catch (RequestException $e) {
-            // Tangani kesalahan permintaan seperti koneksi bermasalah atau API tidak tersedia
             if ($e->hasResponse()) {
                 // Ada respons dari API
                 $response = $e->getResponse();
@@ -126,9 +125,14 @@ class UserController extends Controller
                     session()->flash('danger', $data['message']);
                     return redirect()->back()->withInput();
                 } else {
+                    $data = json_decode($response->getBody(), true);
+                    session()->flash('danger', $data['message']);
+                    return redirect()->back();
+
                     // Handle kesalahan lainnya di sini
                 }
             } else {
+                echo "Entah Kenapa";
                 // Tangani kesalahan ketika tidak ada respons dari API
             }
         }
@@ -174,7 +178,6 @@ class UserController extends Controller
         $save_session   = Session::put('token', $encryptedToken);
         $encryptedToken = Session::get('token');
         $decryptedToken = decrypt($encryptedToken);
-
         $url            = 'https://dev.atm-sehat.com/api/v1/maritalStatus';
         $method         = 'GET';
         $pernikahan     = json_decode($this->curl_get($decryptedToken, $url, $method)->original);
@@ -251,6 +254,25 @@ class UserController extends Controller
             return redirect()->route('users.index');
 
         }
+
+    }
+
+    public function find(Request $request)
+    {
+        $nik    = (int)$request->nik;
+        $users  = User::where('nik', $nik)->get();
+        $data = [
+            "title"     => "Find User",
+            "class"     => "User",
+            "sub_class" => "Find",
+            "content"   => "layout.admin",
+            "nik"       => $nik,
+            "users"     => $users
+        ];
+        return view('admin.user.find', $data);
+    }
+    public function find_nik(Request $request)
+    {
 
     }
 

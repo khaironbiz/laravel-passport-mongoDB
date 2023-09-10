@@ -63,7 +63,7 @@
                                 <tr>
                                     <td>Kunjungan</td>
                                     <td>:</td>
-                                    <td></td>
+                                    <td>{{ $admission->count() }}</td>
                                 </tr>
                                 <tr>
                                     <td>Layanan</td>
