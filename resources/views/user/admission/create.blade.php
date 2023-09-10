@@ -9,21 +9,22 @@
                             {{ session('danger') }}
                         </div>
                     @endif
-                    @if(session('success'))
-                        <div class="alert alert-success" role="alert">
-                            {{ session('success') }}
-                        </div>
-                    @endif
+                        @if(session('success'))
+                            <div class="alert alert-success" role="alert">
+                                {{ session('success') }}
+                            </div>
+                        @endif
                     <div class="card">
                         <div class="row mt-2 justify-content-center">
                             <div class="col-lg-10">
                                 <div class="card">
                                     <div class="card-header bg-dark"><b>{{ $title }}</b></div>
-                                    <form action="{{ route('customers.update', ['id'=>$customer->_id]) }}" method="post">
+                                    <form action="{{ route('customers.store') }}" method="post">
                                         @csrf
-                                        @include('user.customer._form')
+                                        @include('user.admission._form')
                                         <diV class="card-footer">
-                                            <a href="{{ route('customers.show', ['id'=> $customer->_id]) }}" class="btn btn-warning">Back</a>
+                                            <a href="{{ route('customers') }}" class="btn btn-warning">Back</a>
+                                            <button type="submit" class="btn btn-primary">Save</button>
                                         </diV>
                                     </form>
                                 </div>

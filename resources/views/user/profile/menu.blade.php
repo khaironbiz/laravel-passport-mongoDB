@@ -30,6 +30,7 @@
                 <li class="list-group-item">
                     <b>Email</b> <a class="float-right">{{ $user->kontak['email'] }}</a>
                 </li>
+
             </ul>
         </div>
         <!-- Modal -->

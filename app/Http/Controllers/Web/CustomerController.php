@@ -19,7 +19,7 @@ class CustomerController extends Controller
     public function index() {
         $customers = Customer::all();
         $data = [
-            "title"         => "List Customers",
+            "title"         => "Customers List",
             "class"         => "customer",
             "sub_class"     => "list",
             "content"       => "layout.admin",
@@ -31,9 +31,9 @@ class CustomerController extends Controller
     {
         $customer  = new Customer();
         $data = [
-            "title"         => "List Customers",
+            "title"         => "Create New Customers",
             "class"         => "customer",
-            "sub_class"     => "list",
+            "sub_class"     => "create",
             "content"       => "layout.admin",
             "customer"      => $customer,
 
@@ -122,14 +122,69 @@ class CustomerController extends Controller
         $customer   = Customer::where('_id', $id)->first();
         $kits       = Kit::where('owner.code', $customer->code)->get();
         $data = [
-            "title"         => "List Customers",
+            "title"         => "Detail Customer",
             "class"         => "customer",
-            "sub_class"     => "list",
+            "sub_class"     => "detail",
             "content"       => "layout.admin",
             "customer"      => $customer,
             "kits"          => $kits
         ];
 
         return view('user.customer.show', $data);
+    }
+    public function edit($id)
+    {
+        $customer   = Customer::find($id);
+        $data = [
+            "title"         => "Edit Customer",
+            "class"         => "customer",
+            "sub_class"     => "detail",
+            "content"       => "layout.admin",
+            "customer"      => $customer,
+        ];
+
+        return view('user.customer.edit', $data);
+    }
+    public function update(Request $request, $id)
+    {
+        $validator = Validator::make($request->all(), [
+            'code'      => 'required',
+            'name'      => 'required',
+            'hp'        => 'required',
+            'email'     => 'required',
+            'postal'    => 'required'
+        ]);
+        $data_input = [
+            'code'      => $request->code,
+            'name'      => $request->name,
+            'email'     => $request->email,
+            'hp'        => $request->hp,
+            'postal'    => $request->postal,
+            'website'   => $request->website
+        ];
+        if ($validator->fails()) {
+            return redirect()->back()
+                ->withErrors($validator)
+                ->withInput();
+        }else{
+            if (! empty($request->nik_pic)){
+                $user       = User::where('nik',(int)$request->nik_pic)->first();
+                if (empty($user)){
+                    session()->flash('danger', 'NIK PIC tidak terdaftar');
+                    return back();
+                }else{
+                    $data_input['pic'] = $user->nama['nama_depan']." ". $user->nama['nama_belakang'];
+                }
+            }else{
+
+            }
+
+            $customer = Customer::find($id);
+            $update = $customer->update($data_input);
+            session()->flash('success', 'Customer updated');
+            if($update){
+                return back();
+            }
+        }
     }
 }

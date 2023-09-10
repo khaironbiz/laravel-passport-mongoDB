@@ -69,7 +69,7 @@
         <!-- /.content -->
     </div>
     <!-- /.content-wrapper -->
-    <footer class="main-footer">
+    <footer class="main-footer mt-5">
         <div class="float-right d-none d-sm-block">
             <b>Version</b> 2.0.0    </div>
         <strong>Copyright &copy; 2014-2022 <a href="{{ route('home') }}">{{ env('APP_NAME') }}</a>.</strong> All rights reserved.

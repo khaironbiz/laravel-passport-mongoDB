@@ -15,13 +15,10 @@
                             </div>
                         @endif
                     <div class="card">
-                        <div class="card-header bg-info">
-                            @include('layout.menu.admin.submenu.master')
-                        </div>
                         <div class="row mt-2 justify-content-center">
                             <div class="col-lg-10">
                                 <div class="card">
-                                    <div class="card-header bg-dark"><b>Create Master {{ $title }}</b></div>
+                                    <div class="card-header bg-dark"><b>{{ $title }}</b></div>
                                     <form action="{{ route('customers.store') }}" method="post">
                                         @csrf
                                         @include('user.customer._form')

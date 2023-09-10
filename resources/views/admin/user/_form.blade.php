@@ -10,7 +10,7 @@
                             <th>Nama Depan</th>
                             <td>:</td>
                             <td>
-                                <input type="text" class="form-control form-control-sm" name="nama_depan" value="{{ old('nama_depan', $users->nama['nama_depan']) }}">
+                                <input type="text" class="form-control form-control-sm" name="nama_depan" value="{{ old('nama_depan') }}">
                                 @error('nama_depan')
                                 <small class="text-danger">{{$message}}</small>
                                 @enderror
@@ -20,7 +20,7 @@
                             <th>Nama Belakang</th>
                             <td>:</td>
                             <td>
-                                <input type="text" class="form-control form-control-sm" name="nama_belakang" value="{{ old('nama_belakang', $users->nama['nama_belakang']) }}">
+                                <input type="text" class="form-control form-control-sm" name="nama_belakang" value="{{ old('nama_belakang') }}">
                                 @error('nama_belakang')
                                 <small class="text-danger">{{$message}}</small>
                                 @enderror
@@ -31,7 +31,7 @@
                             <th>NIK</th>
                             <td>:</td>
                             <td>
-                                <input type="text" class="form-control form-control-sm" name="nik" value="{{ old('nik', $users->nik) }}">
+                                <input type="text" class="form-control form-control-sm" name="nik" value="{{ old('nik') }}">
                                 @error('nik')
                                 <small class="text-danger">{{$message}}</small>
                                 @enderror
@@ -66,6 +66,16 @@
                                 @enderror
                             </td>
                         </tr>
+                        <tr>
+                            <th>Suku</th>
+                            <td>:</td>
+                            <td>
+                                <input type="text" class="form-control form-control-sm" name="suku" value="{{ old('suku') }}">
+                                @error('suku')
+                                <small class="text-danger">{{$message}}</small>
+                                @enderror
+                            </td>
+                        </tr>
                     </table>
                 </div>
             </div>
@@ -79,7 +89,7 @@
                             <th>Tempat Lahir</th>
                             <td>:</td>
                             <td>
-                                <input type="text" class="form-control form-control-sm" name="place_birth" value="{{ old('place_birth', $users->lahir['tempat'] ) }}">
+                                <input type="text" class="form-control form-control-sm" name="place_birth" value="{{ old('place_birth') }}">
                                 @error('place_birth')
                                 <small class="text-danger">{{$message}}</small>
                                 @enderror
@@ -89,7 +99,7 @@
                             <th>Tanggal Lahir</th>
                             <td>:</td>
                             <td>
-                                <input type="date" class="form-control form-control-sm" name="birth_date" value="{{ old('birth_date', $users->lahir['tanggal']) }}">
+                                <input type="date" class="form-control form-control-sm" name="birth_date" value="{{ old('birth_date') }}">
                                 @error('birth_date')
                                 <small class="text-danger">{{$message}}</small>
                                 @enderror
@@ -123,21 +133,12 @@
                                 @enderror
                             </td>
                         </tr>
-                        <tr>
-                            <th>Suku</th>
-                            <td>:</td>
-                            <td>
-                                <input type="text" class="form-control form-control-sm" name="suku" value="{{ old('suku', $users->suku) }}">
-                                @error('suku')
-                                <small class="text-danger">{{$message}}</small>
-                                @enderror
-                            </td>
-                        </tr>
+
                         <tr>
                             <th>Phone</th>
                             <td>:</td>
                             <td>
-                                <input type="number" class="form-control form-control-sm" name="nomor_telepon" value="{{ old('nomor_telepon', $users->kontak['nomor_telepon'] ) }}">
+                                <input type="number" class="form-control form-control-sm" name="nomor_telepon" value="{{ old('nomor_telepon' ) }}">
                                 @error('nomor_telepon')
                                 <small class="text-danger">{{$message}}</small>
                                 @enderror
@@ -147,7 +148,7 @@
                             <th>Email</th>
                             <td>:</td>
                             <td>
-                                <input type="email" class="form-control form-control-sm" name="email" value="{{ old('email', $users->kontak['email']) }}">
+                                <input type="email" class="form-control form-control-sm" name="email" value="{{ old('email') }}">
                                 @error('email')
                                 <small class="text-danger">{{$message}}</small>
                                 @enderror

@@ -10,7 +10,10 @@ use App\Models\Province;
 use App\Models\Religion;
 use App\Models\User;
 use App\Models\Wilayah;
+use GuzzleHttp\Client;
+use GuzzleHttp\Exception\RequestException;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
 
@@ -41,7 +44,11 @@ class UserController extends Controller
      */
     public function create()
     {
-        $token          = 'Authorization: Bearer 645706809498aea6a30091c2|QJESpLWRUr1CRQTwjvYQ4L3ZiuCvirpyLQccCh3d';
+        $session_token  = decrypt(session('web_token'));
+        $header = [
+            'Authorization' => "Bearer $session_token",
+        ];
+        $token          = 'Authorization: Bearer '. $session_token;
         $url            = 'https://dev.atm-sehat.com/api/v1/maritalStatus';
         $method         = 'GET';
         $pernikahan     = json_decode($this->curl_get($token, $url, $method)->original);
@@ -73,9 +80,64 @@ class UserController extends Controller
      */
     public function store(StoreUserRequest $request)
     {
-        $data_input = $request->all();
-        $data_json = json_encode($data_input);
-        dd($data_json);
+        $post = [
+            'nama_depan'    => $request->nama_depan,
+            'nama_belakang' => $request->nama_belakang,
+            'gender'        => $request->gender,
+            'nomor_telepon' => $request->nomor_telepon,
+            'nik'           => $request->nik,
+            'tempat_lahir'  => $request->tempat_lahir,
+            'tanggal_lahir' => $request->tanggal_lahir
+        ];
+        $api_ext        = env('APP_API_EXTERNAL');
+        $url            = $api_ext."/v1/auth/register";
+        $session_token  = decrypt(session('web_token'));
+        $header         = [
+            'Authorization' => "Bearer $session_token",
+        ];
+        $client         = new Client();
+        try {
+            $response   = $client->post($url, [
+                'headers'       => $header,
+                'form_params'   => $post
+            ]);
+
+            // Periksa status kode respons
+            if ($response->getStatusCode() === 201) {
+                $data = json_decode($response->getBody(), true);
+                session()->flash('success', $data['message']);
+                return redirect()->back();
+
+            } elseif ($response->getStatusCode() === 404) {
+                echo "Not Found";
+                // Respons dengan status 404 (Not Found)
+                // Handle kesalahan 404 di sini, misalnya, kembalikan pesan kesalahan atau lakukan tindakan lain yang sesuai
+            } else {
+                // Respons dengan status kode lain
+                // Handle kesalahan lainnya di sini
+            }
+        } catch (RequestException $e) {
+            // Tangani kesalahan permintaan seperti koneksi bermasalah atau API tidak tersedia
+            if ($e->hasResponse()) {
+                // Ada respons dari API
+                $response = $e->getResponse();
+                if ($response->getStatusCode() === 404) {
+                    $data = json_decode($response->getBody(), true);
+                    session()->flash('danger', $data['message']);
+                    return redirect()->back()->withInput();
+                } else {
+                    // Handle kesalahan lainnya di sini
+                }
+            } else {
+                // Tangani kesalahan ketika tidak ada respons dari API
+            }
+        }
+
+
+
+
+
+
     }
 
     /**

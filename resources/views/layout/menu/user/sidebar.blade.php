@@ -141,12 +141,15 @@ $foto = \Illuminate\Support\Facades\Auth::user()['foto']
                                     <p>Customers</p>
                                 </a>
                             </li>
-                            <li class="nav-item">
-                                <a href="" class="nav-link">
-                                    <i class="far fa-circle nav-icon"></i>
-                                    <p>Jenis Obat</p>
-                                </a>
-                            </li>
+                            @if(Auth::user()['organisasi'] != null)
+                                <li class="nav-item">
+                                    <a href="{{ route('admission.index', ['id'=>Auth::user()['organisasi']['id']]) }}" class="nav-link">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>Admisi</p>
+                                    </a>
+                                </li>
+                            @endif
+
                             <li class="nav-item">
                                 <a href="" class="nav-link">
                                     <i class="far fa-circle nav-icon"></i>
@@ -156,8 +159,6 @@ $foto = \Illuminate\Support\Facades\Auth::user()['foto']
                         </ul>
                     </li>
                 @endif
-
-
 
                 <li class="nav-item">
                     <a href="{{ route('auth.logout') }}" class="nav-link">

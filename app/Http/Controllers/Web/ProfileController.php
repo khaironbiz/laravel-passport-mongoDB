@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Web;
 
 use App\Http\Controllers\Controller;
+use App\Models\Customer;
 use App\Models\Drug;
 use App\Models\Education;
 use App\Models\Marital_status;
@@ -31,7 +32,7 @@ class ProfileController extends Controller
             'headers'       => $header
         ]);
         $data = json_decode($response->getBody());
-//        dd($data->data);
+        $customers      = Customer::all();
         $user           = Auth::user();
         $observation    = Observation::where('id_pasien', Auth::id())->orderBy('time', 'DESC');
         $family         = User::where('family.id_induk', Auth::id())->get();
@@ -44,6 +45,7 @@ class ProfileController extends Controller
             "observation"   => $observation->get(),
             "family"        => $family,
             "resume"        => $data->data,
+            "customers"     => $customers
         ];
         return view('user.profile.profile', $data);
     }
@@ -205,6 +207,46 @@ class ProfileController extends Controller
                 session()->flash('danger', 'Gagal Upload');
                 return redirect()->back();
             }
+        }
+    }
+    public function update_orgnisasi(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'organisasi'  => 'required',
+        ]);
+        if ($validator->fails()) {
+            session()->flash('danger', "Organisasi tidak boleh kosong");
+            return redirect()->back()
+                ->withErrors($validator)
+                ->withInput();
+        }else{
+            $customer = Customer::find($request->organisasi);
+            if(empty($customer)){
+                session()->flash('danger', "Organisasi tidak terdaftar");
+                return redirect()->back();
+            }else{
+                if($request->is_nakes == 'Y'){
+                    $is_nakes = true;
+                }else{
+                    $is_nakes = false;
+                }
+                $data_input = [
+                    'organisasi'    => [
+                        'id'        => $customer->_id,
+                        'name'      => $customer->name,
+                        'status'    => 'pending'
+                    ],
+                    'is_nakes'      => $is_nakes
+                ];
+                $user = Auth::user();
+                $update = $user->update($data_input);
+                if($update){
+                    session()->flash('success', "Organisasi berhasil diupdate");
+                    return redirect()->back();
+                }
+            }
+
+
         }
     }
 }

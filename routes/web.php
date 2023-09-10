@@ -1,6 +1,7 @@
 <?php
 
 
+use App\Http\Controllers\Web\AdmissionController;
 use App\Http\Controllers\Web\AnswerController;
 use App\Http\Controllers\Web\AuthController;
 use App\Http\Controllers\Web\BaseLineController;
@@ -64,6 +65,7 @@ Route::get('profile', [ProfileController::class,'profile'])->name('profile.index
 Route::get('profile/edit', [ProfileController::class,'edit'])->name('profile.edit')->middleware('auth');
 Route::post('profile', [ProfileController::class,'update'])->name('profile.update')->middleware('auth');
 Route::post('profile/foto', [ProfileController::class,'update_foto'])->name('profile.update.foto')->middleware('auth');
+Route::post('profile/organisasi', [ProfileController::class,'update_orgnisasi'])->name('profile.update.organisasi')->middleware('auth');
 Route::get('/profile/{id}', [ProfileController::class,'user'])->name('user.profile')->middleware('auth');
 
 //request otp untuk rest password
@@ -180,7 +182,9 @@ Route::post('education/{id}/delete', [EducationController::class, 'destroy'])->n
 Route::get('/customers',[CustomerController::class, 'index'])->name('customers')->middleware('auth');
 Route::get('/customer',[CustomerController::class, 'create'])->name('customers.create')->middleware('auth');
 Route::post('/customers',[CustomerController::class,'store'])->name('customers.store');
-Route::get('/customers/{id}',[CustomerController::class,'show'])->name('customers.show');
+Route::get('/customers/{id}/show',[CustomerController::class,'show'])->name('customers.show');
+Route::get('/customers/{id}/edit',[CustomerController::class,'edit'])->name('customers.edit');
+Route::post('/customers/{id}/update',[CustomerController::class,'update'])->name('customers.update');
 
 Route::get('observation', [ObservationController::class, 'index'])->name('observation.index');
 
@@ -199,5 +203,7 @@ Route::get('baseLine', [BaseLineController::class, 'index'])->name('baseLine.ind
 Route::get('files', [FileController::class, 'index'])->name('file.index');
 
 Route::get('dashboard', [DashboardController::class, 'index'])->name('dashboard.index');
+
+Route::get('admission/{id}', [AdmissionController::class, 'index'])->name('admission.index');
 
 
