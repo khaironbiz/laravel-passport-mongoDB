@@ -215,6 +215,6 @@ Route::get('services', [ServiceController::class, 'index'])->name('service.index
 Route::get('services/{id}/faskes', [ServiceController::class, 'faskes'])->name('service.faskes');
 Route::get('service', [ServiceController::class, 'create'])->name('service.create');
 Route::post('service', [ServiceController::class, 'store'])->name('service.store');
-Route::get('service/{id}/show', [ServiceController::class, 'show'])->name('service.create');
+Route::get('service/{id}/show', [ServiceController::class, 'show'])->name('service.show');
 Route::get('service/{id}/edit', [ServiceController::class, 'edit'])->name('service.edit');
 Route::post('service/{id}/update', [ServiceController::class, 'update'])->name('service.update');

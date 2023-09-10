@@ -3,7 +3,7 @@
     <section class="content">
         <div class="card">
             <div class="card-header">
-                <a href="{{ route('users.create') }}" class="btn btn-sm btn-primary">Add Data</a>
+                <a href="{{ route('service.create') }}" class="btn btn-sm btn-primary">Add Data</a>
             </div>
             <div class="card-body">
                 <div class="row">
