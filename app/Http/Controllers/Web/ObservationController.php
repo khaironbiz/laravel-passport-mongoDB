@@ -10,17 +10,25 @@ use Illuminate\Http\Request;
 class ObservationController extends Controller
 {
     public function index(){
-        $bservation = Observation::orderBy('time', 'DESC')->get();
+        $bservation = Observation::orderBy('time', 'DESC')->paginate(100);
         $data = [
-            "title"             => "Marital Status",
-            "class"             => "Marital Status",
+            "title"             => "Observation List",
+            "class"             => "Observation",
             "sub_class"         => "Get All",
             "content"           => "layout.admin",
             "observation"       => $bservation,
         ];
         return view('admin.observation.vital-sign.index', $data);
     }
-    public function otp(Request $request){
-
+    public function petugas($id){
+        $bservation = Observation::where('id_petugas', $id)->orderBy('time', 'DESC')->get();
+        $data = [
+            "title"             => "Observation List",
+            "class"             => "Observation",
+            "sub_class"         => "User",
+            "content"           => "layout.admin",
+            "observation"       => $bservation,
+        ];
+        return view('admin.observation.vital-sign.index', $data);
     }
 }

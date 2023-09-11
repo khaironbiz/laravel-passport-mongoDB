@@ -41,6 +41,15 @@ $foto = \Illuminate\Support\Facades\Auth::user()['foto']
             <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
                 <!-- Add icons to the links using the .nav-icon class
                      with font-awesome or any other icon font library -->
+                @if(Auth::user()['is_super_admin']==true)
+                    <li class="nav-item">
+                        <a href="{{ route('dashboard.index') }}" class="nav-link">
+
+                            <i class="nav-icon fas fa-tachometer-alt"></i>
+                            <p>Dashboard<span class="right badge badge-danger">New</span></p>
+                        </a>
+                    </li>
+                @endif
                 <li class="nav-item">
                     <a href="{{ route('profile.index') }}" class="nav-link">
 
@@ -69,28 +78,43 @@ $foto = \Illuminate\Support\Facades\Auth::user()['foto']
                             <p>Medication</p>
                         </a>
                     </li>
-                    <li class="nav-header">Admin</li>
+
+
+                @endif
+                @php
+                    $id_organisasi = \Illuminate\Support\Facades\Auth::user()->organisasi['id'];
+                    $organisasi = \App\Models\Customer::find($id_organisasi);
+                @endphp
+                @if($organisasi->is_distributor == true | \Illuminate\Support\Facades\Auth::user()->is_super_admin == true)
+                    <li class="nav-header">Distributor</li>
                     <li class="nav-item">
                         <a href="{{ route('customers') }}" class="nav-link">
                             <i class="far fa-circle nav-icon"></i>
                             <p>Customers</p>
                         </a>
                     </li>
-                    @if(Auth::user()['organisasi'] != null)
-                        <li class="nav-item">
-                            <a href="{{ route('admission.index', ['id'=>Auth::user()['organisasi']['id']]) }}" class="nav-link">
-                                <i class="far fa-circle nav-icon"></i>
-                                <p>Admisi</p>
-                            </a>
-                        </li>
+                @endif
+                @if(Auth::user()['organisasi'] != null)
+                    <li class="nav-header">Petugas</li>
+                    <li class="nav-item">
+                        <a href="{{ route('admission.index', ['id'=>Auth::user()['organisasi']['id']]) }}" class="nav-link">
+                            <i class="far fa-circle nav-icon"></i>
+                            <p>Admisi</p>
+                        </a>
+                    </li>
 
-                        <li class="nav-item">
-                            <a href="{{ route('service.faskes', ['id'=>Auth::user()['organisasi']['id']]) }}" class="nav-link">
-                                <i class="far fa-circle nav-icon"></i>
-                                <p>Pelayanan RS</p>
-                            </a>
-                        </li>
-                    @endif
+                    <li class="nav-item">
+                        <a href="{{ route('service.faskes', ['id'=>Auth::user()['organisasi']['id']]) }}" class="nav-link">
+                            <i class="far fa-circle nav-icon"></i>
+                            <p>Pelayanan RS</p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="{{ route('users.petugas.faskes', ['id'=>Auth::user()->organisasi['id']]) }}" class="nav-link">
+                            <i class="far fa-circle nav-icon"></i>
+                            <p>Petugas</p>
+                        </a>
+                    </li>
                 @endif
 
                 @if(Auth::user()['is_super_admin']==true)
@@ -105,6 +129,18 @@ $foto = \Illuminate\Support\Facades\Auth::user()['foto']
                         <a href="{{ route('users.index') }}" class="nav-link">
                             <i class="far fa-circle nav-icon"></i>
                             <p>Users</p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="{{ route('users.petugas.all') }}" class="nav-link">
+                            <i class="far fa-circle nav-icon"></i>
+                            <p>Petugas All</p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="{{ route('observation.index') }}" class="nav-link">
+                            <i class="far fa-circle nav-icon"></i>
+                            <p>Observation</p>
                         </a>
                     </li>
                 @endif

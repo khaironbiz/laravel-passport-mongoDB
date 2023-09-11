@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Web;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\user\StoreUserRequest;
 use App\Http\Requests\user\UpdateUserRequest;
+use App\Models\Customer;
 use App\Models\Marital_status;
 use App\Models\Province;
 use App\Models\Religion;
@@ -35,6 +36,64 @@ class UserController extends Controller
             "users"     => $users,
         ];
         return view('admin.user.index', $data);
+    }
+
+    public function petugas_all()
+    {
+        $customers = Customer::all();
+        $users = User::where('level','petugas')->orderBy('nama.nama_depan', 'ASC')->get();
+        $data = [
+            "title"     => "List Petugas",
+            "class"     => "User",
+            "sub_class" => "Petugas",
+            "content"   => "layout.admin",
+            "users"     => $users,
+            "customers" => $customers
+        ];
+        return view('admin.user.petugas', $data);
+    }
+    public function petugas_faskes($id)
+    {
+        $customers = Customer::all();
+        $users = User::where([
+            'level'         => 'petugas',
+            'organisasi.id' => $id
+        ])->orderBy('nama.nama_depan', 'ASC')->get();
+        $data = [
+            "title"     => "List Petugas",
+            "class"     => "User",
+            "sub_class" => "Petugas",
+            "content"   => "layout.admin",
+            "users"     => $users,
+            "customers" => $customers
+        ];
+        return view('admin.user.petugas', $data);
+    }
+
+    public function store_petugas(Request $request)
+    {
+        $users      = User::where('nik', (int) $request->nik);
+        $organisasi = Customer::find($request->organisasi);
+        $data_organisasi = [
+            'id'        => $organisasi->_id,
+            'name'      => $organisasi->name,
+            'status'    => true
+        ];
+        if($users->count()<1){
+            session()->flash('danger', 'NIK tidak terdaftar');
+            return back();
+        }else{
+            $update     = $users->update([
+                'level'         => 'petugas',
+                'organisasi'    => $data_organisasi
+            ]);
+            if($update){
+                return back();
+
+            }
+        }
+
+
     }
 
     /**

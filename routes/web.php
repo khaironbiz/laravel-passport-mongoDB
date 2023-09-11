@@ -140,14 +140,18 @@ Route::post('answer/store', [AnswerController::class, 'store'])->name('answer.st
 Route::get('users', [UserController::class,'index'])->name('users.index')->middleware('auth');
 Route::get('user', [UserController::class,'create'])->name('users.create')->middleware('auth');
 Route::post('users', [UserController::class,'store'])->name('users.store')->middleware('auth');
-Route::get('users/{id}', [UserController::class,'show'])->name('users.show')->middleware('auth');
+Route::get('users/{id}/show', [UserController::class,'show'])->name('users.show')->middleware('auth');
 Route::get('users/{id}/edit', [UserController::class,'edit'])->name('users.edit')->middleware('auth');
 Route::post('users/{id}/update', [UserController::class,'update'])->name('users.update')->middleware('auth');
 Route::post('users/{id}/blokir', [UserController::class,'blokir'])->name('users.blokir')->middleware('auth');
 Route::post('users/{id}/delete', [UserController::class,'destroy'])->name('users.destroy')->middleware('auth');
-Route::get('users/{properti}/{value}', [UserController::class,'kode'])->name('users.kode')->middleware('auth');
+Route::get('users/{properti}/{value}/code', [UserController::class,'kode'])->name('users.kode')->middleware('auth');
 Route::get('users/find/all/create', [UserController::class,'find'])->name('users.find')->middleware('auth');
 
+//petugas
+Route::get('petugas', [UserController::class,'petugas_all'])->name('users.petugas.all')->middleware('auth');
+Route::post('petugas', [UserController::class,'store_petugas'])->name('users.petugas.store')->middleware('auth');
+Route::get('petugas/{id}/faskes', [UserController::class,'petugas_faskes'])->name('users.petugas.faskes')->middleware('auth');
 
 
 Route::get('marital-status', [StatusMenikahController::class,'index'])->name('marital_status');
@@ -190,6 +194,7 @@ Route::get('/customers/{id}/edit',[CustomerController::class,'edit'])->name('cus
 Route::post('/customers/{id}/update',[CustomerController::class,'update'])->name('customers.update');
 
 Route::get('observation', [ObservationController::class, 'index'])->name('observation.index');
+Route::get('observation/{id}/petugas', [ObservationController::class, 'petugas'])->name('observation.petugas');
 
 Route::get('codes', [CodeMasterController::class, 'index'])->name('code.index')->middleware('auth');
 Route::get('code', [CodeMasterController::class, 'create'])->name('code.create')->middleware('auth');

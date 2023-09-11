@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Web;
 
 use App\Http\Controllers\Controller;
 use App\Models\Code;
+use App\Models\Customer;
 use App\Models\Observation;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -19,6 +20,7 @@ class DashboardController extends Controller
         $observation= Observation::all();
         $vital_sign = Observation::where('category.code','vital-signs')->get();
         $laboratory = Observation::where('category.code','laboratory')->get();
+        $customer   = Customer::all();
         $data   = [
             "title"         => "Dashboard",
             "class"         => "Dashboard",
@@ -29,7 +31,8 @@ class DashboardController extends Controller
             "petugas"       => $petugas,
             "observations"  => $observation,
             "vital_sign"    => $vital_sign,
-            "laboratory"    => $laboratory
+            "laboratory"    => $laboratory,
+            "customer"      => $customer
         ];
         return view('customer.dashboard.index', $data);
     }

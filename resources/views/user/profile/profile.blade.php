@@ -166,7 +166,10 @@
                                             <label class="col-sm-2">Status</label>
                                             <div class="col-sm-10">
                                                 @if(! empty($user->organisasi))
-                                                    {{ $user->organisasi['status'] }}
+                                                    @if(! empty($user->organisasi['status']))
+                                                        {{ $user->organisasi['status'] }}
+                                                    @endif
+
                                                 @endif
                                             </div>
                                         </div>
