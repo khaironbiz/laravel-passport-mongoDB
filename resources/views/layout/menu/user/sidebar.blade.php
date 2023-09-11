@@ -92,13 +92,22 @@ $foto = \Illuminate\Support\Facades\Auth::user()['foto']
                         </li>
                     @endif
                 @endif
-                <li class="nav-header">Super Admin</li>
-                <li class="nav-item">
-                    <a href="{{ route('service.index') }}" class="nav-link">
-                        <i class="far fa-circle nav-icon"></i>
-                        <p>Pelayanan</p>
-                    </a>
-                </li>
+
+                @if(Auth::user()['is_super_admin']==true)
+                    <li class="nav-header">Super Admin</li>
+                    <li class="nav-item">
+                        <a href="{{ route('service.index') }}" class="nav-link">
+                            <i class="far fa-circle nav-icon"></i>
+                            <p>Pelayanan</p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="{{ route('users.index') }}" class="nav-link">
+                            <i class="far fa-circle nav-icon"></i>
+                            <p>Users</p>
+                        </a>
+                    </li>
+                @endif
 
                 @if(Auth::user()['counselor']==true)
                     <li class="nav-item">

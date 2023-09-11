@@ -1,5 +1,5 @@
 
-@extends('layout.admin')
+@extends('layout.user')
 @section('content')
     <section class="content">
         <div class="container-fluid">
