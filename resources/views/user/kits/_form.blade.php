@@ -20,7 +20,13 @@
     <div class="row mb-1">
         <label class="col-sm-3">Owner</label>
         <div class="col-sm-9">
-            <input type="text" class="form-control" name="owner" value="{{ old('owner') }}">
+            <select class="form-control" name="owner">
+                <option>----select---</option>
+                @foreach($customer as $list)
+                    <option value="{{ $list->code }}">{{ $list->name }}</option>
+                @endforeach
+            </select>
+
             @error('owner')
             <small class="text-danger">{{$message}}</small>
             @enderror
@@ -29,7 +35,13 @@
     <div class="row mb-1">
         <label class="col-sm-3">Distributor</label>
         <div class="col-sm-9">
-            <input type="text" class="form-control" name="distributor" value="{{ old('distributor') }}">
+            <select class="form-control" name="distributor">
+                <option>----select---</option>
+                @foreach($distributor as $list)
+                    <option value="{{ $list->code }}">{{ $list->name }}</option>
+                @endforeach
+            </select>
+
             @error('distributor')
             <small class="text-danger">{{$message}}</small>
             @enderror

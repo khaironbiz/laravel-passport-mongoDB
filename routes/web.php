@@ -207,7 +207,7 @@ Route::get('files', [FileController::class, 'index'])->name('file.index');
 
 Route::get('dashboard', [DashboardController::class, 'index'])->name('dashboard.index');
 
-Route::get('admission/{id}', [AdmissionController::class, 'index'])->name('admission.index');
+Route::get('admission/{id}/faskes', [AdmissionController::class, 'index'])->name('admission.index');
 Route::get('admission/{id_user}/{id_customer}', [AdmissionController::class, 'kunjungan'])->name('admission.create');
 Route::post('admission/store', [AdmissionController::class, 'store'])->name('admission.store');
 

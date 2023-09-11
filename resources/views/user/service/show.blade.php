@@ -16,10 +16,10 @@
                         @endif
                     <div class="card">
                         <div class="row mt-2 justify-content-center">
-                            <div class="col-lg-8">
+                            <div class="col-lg-10">
                                 <div class="card">
                                     <div class="card-header bg-dark"><b>{{ $title }}</b></div>
-                                    <form action="{{ route('service.store') }}" method="post">
+                                    <form action="{{ route('service.update', ['id'=>$service->_id]) }}" method="post">
                                         @csrf
                                         @include('user.service._form')
                                         <diV class="card-footer">

@@ -73,7 +73,8 @@ class KitController extends Controller
             'owner_code'        => 'required',
             'distributor_code'  => 'required'
         ]);
-
+        $kit_code_post = $request->kit_code;
+        $code = Code::where('code', $kit_code_post);
         if($validator->fails()){
             $status_code    = 422;
             $data           = [
@@ -84,36 +85,48 @@ class KitController extends Controller
                 ]
             ];
             return response()->json($data, $status_code);
-        }
-        $owner          = $this->customer($request->owner_code)->original;
-        $distributor    = $this->customer($request->distributor_code)->original;
-        $input = [
-            'code'          => $request->kit_code,
-            'name'          => $request->kit_name,
-            'owner'         => [
-                'code'      => $owner->code,
-                'name'      => $owner->name
-            ],
-            'distributor'   => [
-                'code'      => $distributor->code,
-                'name'      => $distributor->name
-            ],
-            'is_active'     => (bool) true
-        ];
-        $kit = new Kit();
-        $add = $kit->create($input);
-        if($add){
-            $status_code    = 201;
+        }elseif($code->count() < 1){
+            $status_code    = 404;
             $data           = [
                 "status_code"   => $status_code,
-                "message"       => "success",
+                "message"       => "Kode Kit Tidak terdaftar",
                 "data"          => [
-                    "kit"    => $input
+                    "code"      => $code->first()
                 ]
             ];
             return response()->json($data, $status_code);
+        }else{
+            $owner          = $this->customer($request->owner_code)->original;
+            $distributor    = $this->customer($request->distributor_code)->original;
+            $input = [
+                'code'          => $request->kit_code,
+                'name'          => $request->kit_name,
+                'owner'         => [
+                    'code'      => $owner->code,
+                    'name'      => $owner->name
+                ],
+                'distributor'   => [
+                    'code'      => $distributor->code,
+                    'name'      => $distributor->name
+                ],
+                'is_active'     => (bool) true
+            ];
+            $kit = new Kit();
+            $add = $kit->create($input);
+            if($add){
+                $status_code    = 201;
+                $data           = [
+                    "status_code"   => $status_code,
+                    "message"       => "success",
+                    "data"          => [
+                        "kit"    => $input
+                    ]
+                ];
+                return response()->json($data, $status_code);
 
+            }
         }
+
     }
     public function update(Request $request){
         $validator = Validator::make($request->all(), [

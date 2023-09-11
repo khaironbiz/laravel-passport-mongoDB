@@ -69,7 +69,36 @@ $foto = \Illuminate\Support\Facades\Auth::user()['foto']
                             <p>Medication</p>
                         </a>
                     </li>
+                    <li class="nav-header">Admin</li>
+                    <li class="nav-item">
+                        <a href="{{ route('customers') }}" class="nav-link">
+                            <i class="far fa-circle nav-icon"></i>
+                            <p>Customers</p>
+                        </a>
+                    </li>
+                    @if(Auth::user()['organisasi'] != null)
+                        <li class="nav-item">
+                            <a href="{{ route('admission.index', ['id'=>Auth::user()['organisasi']['id']]) }}" class="nav-link">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Admisi</p>
+                            </a>
+                        </li>
+
+                        <li class="nav-item">
+                            <a href="{{ route('service.faskes', ['id'=>Auth::user()['organisasi']['id']]) }}" class="nav-link">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Pelayanan RS</p>
+                            </a>
+                        </li>
+                    @endif
                 @endif
+                <li class="nav-header">Super Admin</li>
+                <li class="nav-item">
+                    <a href="{{ route('service.index') }}" class="nav-link">
+                        <i class="far fa-circle nav-icon"></i>
+                        <p>Pelayanan</p>
+                    </a>
+                </li>
 
                 @if(Auth::user()['counselor']==true)
                     <li class="nav-item">
@@ -122,38 +151,6 @@ $foto = \Illuminate\Support\Facades\Auth::user()['foto']
                                 <a href="" class="nav-link">
                                     <i class="far fa-circle nav-icon"></i>
                                     <p>Sediaan Obat</p>
-                                </a>
-                            </li>
-                        </ul>
-                    </li>
-                @endif
-                @if(Auth::user()['level'] == "petugas")
-                    <li class="nav-header">Admin</li>
-                    <li class="nav-item">
-                        <a href="#" class="nav-link">
-                            <i class="nav-icon far fa-envelope"></i>
-                            <p>Admin<i class="fas fa-angle-left right"></i></p>
-                        </a>
-                        <ul class="nav nav-treeview">
-                            <li class="nav-item">
-                                <a href="{{ route('customers') }}" class="nav-link">
-                                    <i class="far fa-circle nav-icon"></i>
-                                    <p>Customers</p>
-                                </a>
-                            </li>
-                            @if(Auth::user()['organisasi'] != null)
-                                <li class="nav-item">
-                                    <a href="{{ route('admission.index', ['id'=>Auth::user()['organisasi']['id']]) }}" class="nav-link">
-                                        <i class="far fa-circle nav-icon"></i>
-                                        <p>Admisi</p>
-                                    </a>
-                                </li>
-                            @endif
-
-                            <li class="nav-item">
-                                <a href="" class="nav-link">
-                                    <i class="far fa-circle nav-icon"></i>
-                                    <p>Pelayanan</p>
                                 </a>
                             </li>
                         </ul>

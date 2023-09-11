@@ -78,7 +78,7 @@
                         <b>Kit List</b>
                     </div>
                     <div class="card-body">
-                        <a href="" class="btn btn-sm btn-primary">Add Kit</a>
+                        <a href="{{ route('kits.create') }}" class="btn btn-sm btn-primary">Add Kit</a>
                         <table class="table table-sm table-striped">
                             <thead>
                             <th>#</th>

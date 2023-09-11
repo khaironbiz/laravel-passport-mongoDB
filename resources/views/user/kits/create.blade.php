@@ -1,4 +1,4 @@
-@extends('layout.admin')
+@extends('layout.user')
 @section('content')
     <section class="content">
         <div class="container-fluid">
@@ -14,7 +14,7 @@
                                     <div class="card-header bg-dark"><b>Create Master {{ $title }}</b></div>
                                     <form action="{{ route('kits.store') }}" method="post">
                                         @csrf
-                                        @include('admin.kits._form')
+                                        @include('user.kits._form')
                                         <diV class="card-footer">
                                             <a href="{{ route('kits.index') }}" class="btn btn-warning">Back</a>
                                             <button type="submit" class="btn btn-primary">Save</button>
@@ -27,6 +27,6 @@
                 </div>
             </div>
         </div>
-            <!-- /.container-fluid -->
+        <!-- /.container-fluid -->
     </section>
 @endsection
