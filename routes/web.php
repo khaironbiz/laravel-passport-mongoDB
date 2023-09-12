@@ -193,8 +193,8 @@ Route::get('/customers/{id}/show',[CustomerController::class,'show'])->name('cus
 Route::get('/customers/{id}/edit',[CustomerController::class,'edit'])->name('customers.edit');
 Route::post('/customers/{id}/update',[CustomerController::class,'update'])->name('customers.update');
 
-Route::get('observation', [ObservationWebController::class, 'index'])->name('observation.index');
-Route::get('observation/{id}/petugas', [ObservationWebController::class, 'petugas'])->name('observation.petugas');
+Route::get('observation', [\App\Http\Controllers\Web\TransactionController::class, 'index'])->name('observation.index');
+Route::get('observation/{id}/petugas', [\App\Http\Controllers\Web\TransactionController::class, 'petugas'])->name('observation.petugas');
 
 Route::get('codes', [CodeMasterController::class, 'index'])->name('code.index')->middleware('auth');
 Route::get('code', [CodeMasterController::class, 'create'])->name('code.create')->middleware('auth');
