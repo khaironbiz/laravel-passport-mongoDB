@@ -18,7 +18,7 @@ use App\Http\Controllers\Web\MedicationController;
 use App\Http\Controllers\Web\MedicationScheduleController;
 use App\Http\Controllers\Web\MeetingController;
 use App\Http\Controllers\Web\MessageController;
-use App\Http\Controllers\web\ObservationController;
+use App\Http\Controllers\web\ObservationWebController;
 use App\Http\Controllers\Web\PasienTbcController;
 use App\Http\Controllers\Web\PetugasController;
 use App\Http\Controllers\Web\ProfileController;
@@ -193,8 +193,8 @@ Route::get('/customers/{id}/show',[CustomerController::class,'show'])->name('cus
 Route::get('/customers/{id}/edit',[CustomerController::class,'edit'])->name('customers.edit');
 Route::post('/customers/{id}/update',[CustomerController::class,'update'])->name('customers.update');
 
-Route::get('observation', [ObservationController::class, 'index'])->name('observation.index');
-Route::get('observation/{id}/petugas', [ObservationController::class, 'petugas'])->name('observation.petugas');
+Route::get('observation', [ObservationWebController::class, 'index'])->name('observation.index');
+Route::get('observation/{id}/petugas', [ObservationWebController::class, 'petugas'])->name('observation.petugas');
 
 Route::get('codes', [CodeMasterController::class, 'index'])->name('code.index')->middleware('auth');
 Route::get('code', [CodeMasterController::class, 'create'])->name('code.create')->middleware('auth');

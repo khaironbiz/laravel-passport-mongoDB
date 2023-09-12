@@ -7,7 +7,7 @@ use App\Models\Marital_status;
 use App\Models\Observation;
 use Illuminate\Http\Request;
 
-class ObservationController extends Controller
+class ObservationWebController extends Controller
 {
     public function index(){
         $bservation = Observation::orderBy('time', 'DESC')->paginate(100);

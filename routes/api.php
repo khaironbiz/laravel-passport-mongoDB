@@ -21,7 +21,7 @@ use App\Http\Controllers\Api\v1\KitController;
 use App\Http\Controllers\Api\v1\LinkedUserController;
 use App\Http\Controllers\Api\v1\LogUserKitController;
 use App\Http\Controllers\Api\v1\MaritalStatusController;
-use App\Http\Controllers\Api\v1\ObservationController;
+use App\Http\Controllers\Api\v1\ObservatioController;
 use App\Http\Controllers\Api\v1\OfficerController;
 use App\Http\Controllers\Api\v1\ProfileController;
 use App\Http\Controllers\Api\v1\QuestionController;
@@ -108,22 +108,22 @@ Route::put('/v1/user/restored', [UserController::class, 'restore'])->middleware(
 
 Route::resource('/customers', CustomerController::class);
 
-Route::get('/v1/observation',[ObservationController::class, 'index'] )->middleware('auth:sanctum');
-Route::get('/v1/observation/count',[ObservationController::class,'count'])->middleware('auth:sanctum');
-Route::get('/v1/observation/show/{id}',[ObservationController::class,'show'])->middleware('auth:sanctum');
-Route::post('/v1/bloodPressure',[ObservationController::class, 'bloodPressure'] )->middleware('auth:sanctum');
-Route::post('/v1/observation/systole',[ObservationController::class,'systole'] )->middleware('auth:sanctum');
-Route::post('/v1/observation/diastole',[ObservationController::class, 'diastole'] )->middleware('auth:sanctum');
-Route::post('/v1/hearthRate',[ObservationController::class, 'hearth_rate'] )->middleware('auth:sanctum');
-Route::post('/v1/cholesterol',[ObservationController::class, 'cholesterol'] )->middleware('auth:sanctum');
-Route::post('/v1/glucose',[ObservationController::class, 'blood_glucose'] )->middleware('auth:sanctum');
-Route::post('/v1/uricAcid',[ObservationController::class, 'uric_acid'] )->middleware('auth:sanctum');
-Route::post('/v1/weight',[ObservationController::class, 'weight'] )->middleware('auth:sanctum');
-Route::post('/v1/height',[ObservationController::class, 'height'] )->middleware('auth:sanctum');
-Route::post('/v1/length',[ObservationController::class, 'length'] )->middleware('auth:sanctum');
-Route::post('/v1/suhu',[ObservationController::class,'temperature'])->middleware('auth:sanctum');
-Route::post('/v1/spo2',[ObservationController::class,'spo2'])->middleware('auth:sanctum');
-Route::post('/v1/gd',[ObservationController::class,'gd'])->middleware('auth:sanctum');
+Route::get('/v1/observation',[ObservatioController::class, 'index'] )->middleware('auth:sanctum');
+Route::get('/v1/observation/count',[ObservatioController::class,'count'])->middleware('auth:sanctum');
+Route::get('/v1/observation/show/{id}',[ObservatioController::class,'show'])->middleware('auth:sanctum');
+Route::post('/v1/bloodPressure',[ObservatioController::class, 'bloodPressure'] )->middleware('auth:sanctum');
+Route::post('/v1/observation/systole',[ObservatioController::class,'systole'] )->middleware('auth:sanctum');
+Route::post('/v1/observation/diastole',[ObservatioController::class, 'diastole'] )->middleware('auth:sanctum');
+Route::post('/v1/hearthRate',[ObservatioController::class, 'hearth_rate'] )->middleware('auth:sanctum');
+Route::post('/v1/cholesterol',[ObservatioController::class, 'cholesterol'] )->middleware('auth:sanctum');
+Route::post('/v1/glucose',[ObservatioController::class, 'blood_glucose'] )->middleware('auth:sanctum');
+Route::post('/v1/uricAcid',[ObservatioController::class, 'uric_acid'] )->middleware('auth:sanctum');
+Route::post('/v1/weight',[ObservatioController::class, 'weight'] )->middleware('auth:sanctum');
+Route::post('/v1/height',[ObservatioController::class, 'height'] )->middleware('auth:sanctum');
+Route::post('/v1/length',[ObservatioController::class, 'length'] )->middleware('auth:sanctum');
+Route::post('/v1/suhu',[ObservatioController::class,'temperature'])->middleware('auth:sanctum');
+Route::post('/v1/spo2',[ObservatioController::class,'spo2'])->middleware('auth:sanctum');
+Route::post('/v1/gd',[ObservatioController::class,'gd'])->middleware('auth:sanctum');
 
 
 Route::get('/v1/observation/systole',[SystoleController::class, 'index'] )->middleware('auth:sanctum');
