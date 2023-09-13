@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Code;
 use App\Models\Customer;
 use App\Models\Observation;
+use App\Models\Service;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -21,19 +22,21 @@ class DashboardController extends Controller
         $vital_sign = Observation::where('category.code','vital-signs')->get();
         $laboratory = Observation::where('category.code','laboratory')->get();
         $customer   = Customer::all();
+        $services   = Service::all();
         $data   = [
             "title"         => "Dashboard",
             "class"         => "Dashboard",
             "sub_class"     => "Index",
-            "content"       => "layout.customer",
+            "content"       => "layout.user",
             "users"         => $users,
             "codes"         => $codes,
             "petugas"       => $petugas,
             "observations"  => $observation,
             "vital_sign"    => $vital_sign,
             "laboratory"    => $laboratory,
-            "customer"      => $customer
+            "customer"      => $customer,
+            "services"      => $services
         ];
-        return view('customer.dashboard.index', $data);
+        return view('user.dashboard.index', $data);
     }
 }

@@ -53,7 +53,7 @@
                                                         <tr>
                                                             <td>{{ $loop->iteration }}</td>
                                                             <td>{{ $data->coding['display'] }}<br> <small>{{ date('Y-m-d H:i', $data->time) }}</small> </td>
-                                                            <td>{{ $data->value }} <br> <small>{{ $data->unit['display'] }}</td>
+                                                            <td>{{ round($data->value, 2)  }} <br> <small>{{ $data->unit['display'] }}</td>
                                                             <td></td>
                                                             <td></td>
                                                         </tr>

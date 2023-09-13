@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>{{ $title }}</title>
-    <link rel="icon" href="https://ppni.or.id/simk/image/LOGO-PPNI.png">
+    <link rel="icon" href="https://nos.wjv-1.neo.id/atm-sehat/image/tsi_logo_small.png">
 
     <!-- Google Font: Source Sans Pro -->
     <link rel="stylesheet"
