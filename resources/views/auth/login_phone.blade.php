@@ -6,6 +6,9 @@
         </div>
 
         <div class="card">
+            <div class="card-img text-center">
+                <img class="small card-img w-50" src="{{ env('APP_LOGO') }}">
+            </div>
             <div class="card-body login-card-body">
                 @if(session('danger') != null)
                     <p class="login-box-msg text-danger">{{ session('danger') }}</p>

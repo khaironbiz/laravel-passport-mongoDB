@@ -6,6 +6,9 @@
         </div>
 
         <div class="card">
+            <div class="card-img text-center">
+                <img class="small card-img w-50" src="{{ env('APP_LOGO') }}">
+            </div>
             <div class="card-body login-card-body">
                 <p class="login-box-msg">Enter OTP and email to activate this account.</p>
                 @if(session('success') != null)

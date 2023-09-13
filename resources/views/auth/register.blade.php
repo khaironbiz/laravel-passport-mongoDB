@@ -5,6 +5,9 @@
         <a href="../../index2.html"><b>{{ env('APP_NAME') }}</b></a>
     </div>
     <div class="card">
+        <div class="card-img text-center">
+            <img class="small card-img w-50" src="{{ env('APP_LOGO') }}">
+        </div>
         <div class="card-body">
             <p class="login-box-msg">Register a new membership</p>
             <form action="{{ route('auth.daftar') }}" method="post">
