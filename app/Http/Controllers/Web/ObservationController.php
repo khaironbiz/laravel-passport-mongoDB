@@ -1,13 +1,12 @@
 <?php
 
-namespace App\Http\Controllers\web;
+namespace App\Http\Controllers\Web;
 
 use App\Http\Controllers\Controller;
-use App\Models\Marital_status;
 use App\Models\Observation;
 use Illuminate\Http\Request;
 
-class ObservationWebController extends Controller
+class ObservationController extends Controller
 {
     public function index(){
         $bservation = Observation::orderBy('time', 'DESC')->paginate(100);
