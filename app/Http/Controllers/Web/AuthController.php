@@ -270,8 +270,8 @@ class AuthController extends Controller
                 ]);
                 $statusCode = $response->getStatusCode();
                 if($statusCode == 200){
-                    session()->flash('success', 'Permohonan reset akun telah diterima, periksa email anda');
-                    return redirect()->route('auth.forgotPassword');
+                    session()->flash('success', 'Permohonan reset akun telah diterima, input OTP yang telah kami kirimkan, untuk membuat password baru anda');
+                    return redirect()->route('auth.request.reset.password');
                 }
             }
         }else{

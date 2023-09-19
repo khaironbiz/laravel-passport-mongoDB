@@ -30,4 +30,16 @@ class ObservationController extends Controller
         ];
         return view('admin.observation.vital-sign.index', $data);
     }
+    public function show($id){
+        $observation = Observation::find($id);
+        $data = [
+            "title"             => "Observation Detail",
+            "class"             => "Observation",
+            "sub_class"         => "Detail",
+            "content"           => "layout.admin",
+            "observation"       => $observation,
+        ];
+//        dd($observation);
+        return view('admin.observation.vital-sign.show', $data);
+    }
 }

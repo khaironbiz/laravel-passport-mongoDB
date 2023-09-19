@@ -40,7 +40,7 @@
                         @enderror
                     </div>
                     <div class="mb-1">
-                        <input type="password" class="form-control" placeholder="Passwor Confirm" name="password_confirmation">
+                        <input type="password" class="form-control" placeholder="Password Confirm" name="password_confirmation">
                         @error('password_confirmation')
                         <small class="text-danger">{{ $message }}</small>
                         @enderror

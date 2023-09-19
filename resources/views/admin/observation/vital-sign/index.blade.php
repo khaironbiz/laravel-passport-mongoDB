@@ -36,7 +36,7 @@
                                             @endif
                                         </td>
                                         <td>{{ date('Y-m-d', $data->time) }} <br> <small>{{ date('H:i:s', $data->time) }}</small> </td>
-                                        <td><a href="" class="btn btn-sm btn-info">Detail</a></td>
+                                        <td><a href="{{ route('observation.show', ['id'=>$data->_id]) }}" class="btn btn-sm btn-info">Detail</a></td>
                                     </tr>
                                 @endforeach
                                 </tbody>

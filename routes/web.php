@@ -195,6 +195,7 @@ Route::post('/customers/{id}/update',[CustomerController::class,'update'])->name
 
 Route::get('observation', [ObservationController::class, 'index'])->name('observation.index');
 Route::get('observation/{id}/petugas', [ObservationController::class, 'petugas'])->name('observation.petugas');
+Route::get('observation/{id}/show', [ObservationController::class, 'show'])->name('observation.show');
 
 Route::get('codes', [CodeMasterController::class, 'index'])->name('code.index')->middleware('auth');
 Route::get('code', [CodeMasterController::class, 'create'])->name('code.create')->middleware('auth');
