@@ -22,13 +22,14 @@ class UserController extends Controller
      */
     public function index()
     {
-        $user   = UserResource::collection(User::all());
+        $user_db = User::all();
+        $user   = UserResource::collection($user_db);
         $data   = [
             "status"        => "success",
             "status_code"   => 200,
             "time"          => time(),
             "data"          => [
-                'count'     => User::count(),
+                'count'     => $user_db->count(),
                 'users'     => $user
             ]
         ];
@@ -60,7 +61,7 @@ class UserController extends Controller
             $path       = '';
             $file_name  = '';
             $file_ext   = '';
-            $new_file_name = time().random_int(1000,9000).".".$file_ext;
+            $new_file_name = time().random_int(1000,9999).".".$file_ext;
         }else{
             $new_file_name='';
         }

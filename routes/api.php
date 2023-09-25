@@ -23,6 +23,7 @@ use App\Http\Controllers\Api\v1\LogUserKitController;
 use App\Http\Controllers\Api\v1\MaritalStatusController;
 use App\Http\Controllers\Api\v1\ObservatioController;
 use App\Http\Controllers\Api\v1\OfficerController;
+use App\Http\Controllers\Api\v1\PetugasController;
 use App\Http\Controllers\Api\v1\ProfileController;
 use App\Http\Controllers\Api\v1\QuestionController;
 use App\Http\Controllers\Api\v1\QuestionnaireController;
@@ -217,3 +218,6 @@ Route::post('v1/foto/upload', [\App\Http\Controllers\Web\FotoController::class, 
 
 Route::get('v1/employees', [EmployeeController::class, 'index'])->name('employee.index');
 Route::post('v1/employees', [EmployeeController::class, 'store'])->name('employee.store');
+
+Route::get('v1/petugas', [PetugasController::class,'index'])->middleware('auth:sanctum');
+Route::post('v1/petugas', [PetugasController::class,'store'])->middleware('auth:sanctum');
