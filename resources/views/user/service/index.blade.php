@@ -13,7 +13,7 @@
                             <th>#</th>
                             <th>Nama Faskes</th>
                             <th>Nama Layanan</th>
-                            <th>Count</th>
+                            <th>Catogory</th>
                             <th>Aksi</th>
                             </thead>
                             <tbody>
@@ -26,7 +26,7 @@
                                     @endphp
                                     <td>{{ $customer->name }}</td>
                                     <td>{{ $data->name }}</td>
-                                    <td></td>
+                                    <td>{{ $data->category['display'] }}</td>
                                     <td>
                                         <a href="{{ route('service.show', ['id'=>$data->_id]) }}" class="btn btn-sm btn-info">Detail</a>
                                     </td>

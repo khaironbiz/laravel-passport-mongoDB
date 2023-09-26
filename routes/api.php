@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Api\FileController;
+use App\Http\Controllers\Api\v1\AdmissionController;
 use App\Http\Controllers\Api\v1\AnswerController;
 use App\Http\Controllers\Api\v1\AuthController;
 use App\Http\Controllers\Api\v1\ChatController;
@@ -221,3 +222,7 @@ Route::post('v1/employees', [EmployeeController::class, 'store'])->name('employe
 
 Route::get('v1/petugas', [PetugasController::class,'index'])->middleware('auth:sanctum');
 Route::post('v1/petugas', [PetugasController::class,'store'])->middleware('auth:sanctum');
+Route::delete('v1/petugas', [PetugasController::class,'revoke'])->middleware('auth:sanctum');
+
+Route::get('v1/admissions', [AdmissionController::class,'index'])->middleware('auth:sanctum');
+Route::post('v1/admissions', [AdmissionController::class,'store'])->middleware('auth:sanctum');

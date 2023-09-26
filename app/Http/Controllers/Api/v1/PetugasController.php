@@ -13,10 +13,18 @@ use Illuminate\Validation\Rule;
 
 class PetugasController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $user_db = User::where('level', 'petugas')->get();
-        $user   = UserResource::collection($user_db);
+        $id_customer    = $request->id_customer;
+        if(! empty($id_customer)){
+            $user_db        = User::where([
+                'level'         => 'petugas',
+                'organisasi.id' => $request->id_customer
+                ])->get();
+        }else{
+            $user_db    = User::where('level', 'petugas')->get();
+        }
+        $user           = UserResource::collection($user_db);
         $data   = [
             "status"        => "success",
             "status_code"   => 200,
@@ -87,6 +95,58 @@ class PetugasController extends Controller
                             'customer'  => $customer
                         ];
                     }
+            }
+        }
+        $data = [
+            'status'        => $status,
+            'status_code'   => $status_code,
+            'message'       => $message,
+            'data'          => $data
+        ];
+        return response()->json($data,$status_code);
+    }
+    public function revoke(Request $request){
+        $validator  = Validator::make($request->all(), [
+            'nik'           => 'required'
+        ]);
+        if ($validator->fails()){
+            $status         = "Gagal Validasi";
+            $status_code    = 203;
+            $message        = "Gagal Validasi";
+            $data           = [
+                "error"     => $validator->errors()
+            ];
+        }else{
+            $user           = User::where('nik', (int) $request->nik);
+            $data_update    = [
+                'level'     => 'user',
+            ];
+
+            if($user->count()<1){
+                $status         = "Not Found";
+                $status_code    = 404;
+                $message        = "User Not Found";
+                $data           = [
+                    "user"     => $user->first()
+                ];
+            }else{
+                $update = $user->update($data_update);
+                if($update){
+                    $status         = "success";
+                    $status_code    = 200;
+                    $message        = "revoke success";
+                    $data           = [
+                        "user"     => $user->first()
+                    ];
+                }else{
+                    $status         = "success";
+                    $status_code    = 400;
+                    $message        = "revoke success";
+                    $data           = [
+                        "user"     => $user->first()
+                    ];
+                }
+
             }
         }
         $data = [
