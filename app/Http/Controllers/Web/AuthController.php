@@ -261,6 +261,7 @@ class AuthController extends Controller
                 session()->flash('danger', "Anda masih memiliki OTP aktif, silahkan periksa email anda, sisa waktu $sisa_waktu");
                 return redirect()->route('auth.forgotPassword')
                     ->withInput();
+                //jika
             }else{
                 $api_ext    = env('APP_API_EXTERNAL');
                 $url        = $api_ext."/v1/auth/forgotpassword";
