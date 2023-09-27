@@ -226,3 +226,5 @@ Route::delete('v1/petugas', [PetugasController::class,'revoke'])->middleware('au
 
 Route::get('v1/admissions', [AdmissionController::class,'index'])->middleware('auth:sanctum');
 Route::post('v1/admissions', [AdmissionController::class,'store'])->middleware('auth:sanctum');
+
+Route::post('v1/strokeRisk', [\App\Http\Controllers\Api\v1\StrokeRiskController::class,'store'])->middleware('auth:sanctum');
