@@ -20,11 +20,7 @@
                             @foreach($services as $data)
                                 <tr>
                                     <td>{{ $loop->iteration }}</td>
-                                    @php
-                                    $id_faskes = $data->id_faskes;
-                                    $customer = \App\Models\Customer::find($id_faskes);
-                                    @endphp
-                                    <td>{{ $customer->name }}</td>
+                                    <td>{{ $data->faskes['name'] }}</td>
                                     <td>{{ $data->name }}</td>
                                     <td>{{ $data->category['display'] }}</td>
                                     <td>

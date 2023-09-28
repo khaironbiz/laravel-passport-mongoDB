@@ -16,13 +16,13 @@ class AdmissionResource extends JsonResource
      */
     public function toArray($request)
     {
-        $user = User::find($this->id_pasien);
-        $customer = Customer::find($this->id_faskes);
+
         return [
             'id'            => $this->_id,
-            'nama_depan'    => $user->nama['nama_depan'],
-            'nama_belakang' => $user->nama['nama_belakang'],
-            'nama_faskes'   => $customer->name,
+            'nama_depan'    => $this->pasien['nama']['nama_depan'],
+            'nama_belakang' => $this->pasien['nama']['nama_belakang'],
+            'nama_faskes'   => $this->faskes['name'],
+            'service'       => $this->service['name'],
             'date'          => $this->date,
             'jaminan'       => $this->jaminan
         ];

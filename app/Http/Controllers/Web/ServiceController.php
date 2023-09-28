@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Code;
 use App\Models\Customer;
 use App\Models\Service;
+use GuzzleHttp\Client;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
@@ -84,11 +85,17 @@ class ServiceController extends Controller
                 'system'    => $service_category->system,
                 'display'   => $service_category->display
             ];
+            $customer = Customer::find($request->id_faskes);
+            $data_customer = [
+                'id'    => $customer->_id,
+                'name'  => $customer->name
+            ];
             $data_input = [
-                'id_faskes' => $request->id_faskes,
+                'faskes'    => $data_customer,
                 'name'      => $request->service_name,
                 'category'  => $data_category
             ];
+
             $service = new Service();
             $add = $service->create($data_input);
             if($add){
@@ -116,8 +123,13 @@ class ServiceController extends Controller
                 'system'    => $service_category->system,
                 'display'   => $service_category->display
             ];
+            $customer = Customer::find($request->id_faskes);
+            $data_customer = [
+                'id'    => $customer->_id,
+                'name'  => $customer->name
+            ];
             $data_input = [
-                'id_faskes' => $request->id_faskes,
+                'faskes'    => $data_customer,
                 'name'      => $request->service_name,
                 'category'  => $data_category
             ];

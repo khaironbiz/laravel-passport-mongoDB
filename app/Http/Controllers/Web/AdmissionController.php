@@ -3,10 +3,12 @@
 namespace App\Http\Controllers\Web;
 
 use App\Http\Controllers\Controller;
-use App\Models\admission;
+use App\Models\Admission;
 use App\Models\Customer;
 use App\Models\Question;
+use App\Models\Service;
 use App\Models\User;
+use GuzzleHttp\Client;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
@@ -14,7 +16,7 @@ class AdmissionController extends Controller
 {
     public function index($id)
     {
-        $admissions = admission::where('id_faskes', $id)->get();
+        $admissions = Admission::where('faskes.id', $id)->get();
         $data = [
             "title"         => "Admission List",
             "class"         => "Admission",
@@ -52,15 +54,20 @@ class AdmissionController extends Controller
                 ->withErrors($validator)
                 ->withInput();
         }else{
-            $data_input = [
+            $data_post = [
                 'id_faskes' => $request->id_faskes,
                 'id_pasien' => $request->id_pasien,
                 'date'      => $request->date,
             ];
-            $admission  = new admission();
-            $add        = $admission->create($data_input);
-            if($add){
-                session()->flash('success', 'Admisi berhasil');
+            $api_ext    = env('APP_API_EXTERNAL');
+            $url        = $api_ext."/v1/auth/forgotpassword";
+            $client     = new Client();
+            $response   = $client->post($url, [
+                'form_params' => $data_post
+            ]);
+            $statusCode = $response->getStatusCode();
+            if($statusCode == 200){
+                session()->flash('success', 'Admission Created');
                 return back();
             }
         }

@@ -38,7 +38,6 @@ class AdmissionController extends Controller
             'date'          => 'required'
         ]);
         if ($validator->fails()){
-            $status         = "Gagal Validasi";
             $status_code    = 203;
             $message        = "Gagal Validasi";
             $data           = [
@@ -72,14 +71,12 @@ class AdmissionController extends Controller
             $admission = new Admission();
             $create     = $admission->create($data_input);
             if($create){
-                $status         = "success";
                 $status_code    = 200;
                 $message        = "Admission created";
                 $data           = [
                     "admission"     => $data_input
                 ];
             }else{
-                $status         = "Un success";
                 $status_code    = 204;
                 $message        = "Admission not created";
                 $data           = [
@@ -88,7 +85,6 @@ class AdmissionController extends Controller
             }
         }
         $data   = [
-            "status"        => $status,
             "status_code"   => $status_code,
             "time"          => time(),
             "data"          => $data
