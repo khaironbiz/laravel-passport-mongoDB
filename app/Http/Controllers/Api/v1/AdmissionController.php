@@ -37,16 +37,34 @@ class AdmissionController extends Controller
             'id_service'    => 'required',
             'date'          => 'required'
         ]);
+        $user       = User::find($request->id_pasien);
+        $customer   = Customer::find($request->id_faskes);
+        $service    = Service::find($request->id_service);
         if ($validator->fails()){
             $status_code    = 203;
             $message        = "Gagal Validasi";
             $data           = [
                 "error"     => $validator->errors()
             ];
+        }elseif(empty($user)) {
+            $status_code    = 404;
+            $message        = "Patient Not Found";
+            $data           = [
+                "input"     => $request->all()
+            ];
+        }elseif (empty($customer)) {
+            $status_code    = 404;
+            $message        = "Faskes Not Found";
+            $data           = [
+                "input"     => $request->all()
+            ];
+        }elseif(empty($service)) {
+            $status_code    = 404;
+            $message        = "Service Not Found";
+            $data           = [
+                "input"     => $request->all()
+            ];
         }else{
-            $user       = User::find($request->id_pasien);
-            $customer   = Customer::find($request->id_faskes);
-            $service    = Service::find($request->id_service);
             $data_input = [
                 'pasien'        => [
                     'id'        => $user->_id,
@@ -86,6 +104,7 @@ class AdmissionController extends Controller
         }
         $data   = [
             "status_code"   => $status_code,
+            "message"       => $message,
             "time"          => time(),
             "data"          => $data
         ];

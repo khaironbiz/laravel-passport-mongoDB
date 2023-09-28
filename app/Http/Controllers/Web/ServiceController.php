@@ -26,7 +26,7 @@ class ServiceController extends Controller
     }
     public function faskes($id)
     {
-        $services = Service::where('id_faskes', $id)->get();
+        $services = Service::where('faskes.id', $id)->get();
         $data = [
             "title"     => "Service List",
             "class"     => "Service",

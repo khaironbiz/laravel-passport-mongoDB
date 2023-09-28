@@ -29,9 +29,12 @@ use App\Http\Controllers\Api\v1\ProfileController;
 use App\Http\Controllers\Api\v1\QuestionController;
 use App\Http\Controllers\Api\v1\QuestionnaireController;
 use App\Http\Controllers\Api\v1\ReligionController;
+use App\Http\Controllers\Api\v1\ServiceController;
+use App\Http\Controllers\Api\v1\StrokeRiskController;
 use App\Http\Controllers\Api\v1\SystoleController;
 use App\Http\Controllers\Api\v1\UserController;
 use App\Http\Controllers\Api\v1\WilayahController;
+use App\Http\Controllers\Web\FotoController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -215,7 +218,7 @@ Route::post('v1/drugs', [DrugController::class, 'store'])->middleware('auth:sanc
 Route::get('v1/counselors', [CounselorController::class, 'index'])->middleware('auth:sanctum');
 Route::post('v1/counselors', [CounselorController::class, 'store'])->middleware('auth:sanctum');
 
-Route::post('v1/foto/upload', [\App\Http\Controllers\Web\FotoController::class, 'store']);
+Route::post('v1/foto/upload', [FotoController::class, 'store']);
 
 Route::get('v1/employees', [EmployeeController::class, 'index'])->name('employee.index');
 Route::post('v1/employees', [EmployeeController::class, 'store'])->name('employee.store');
@@ -227,8 +230,10 @@ Route::delete('v1/petugas', [PetugasController::class,'revoke'])->middleware('au
 Route::get('v1/admissions', [AdmissionController::class,'index'])->middleware('auth:sanctum');
 Route::post('v1/admissions', [AdmissionController::class,'store'])->middleware('auth:sanctum');
 
-Route::get('v1/services/category', [\App\Http\Controllers\Api\v1\ServiceController::class,'service_category'])->middleware('auth:sanctum');
-Route::get('v1/services', [\App\Http\Controllers\Api\v1\ServiceController::class,'index'])->middleware('auth:sanctum');
-Route::post('v1/services', [\App\Http\Controllers\Api\v1\ServiceController::class,'store'])->middleware('auth:sanctum');
+Route::get('v1/services/category', [ServiceController::class,'service_category'])->middleware('auth:sanctum');
+Route::get('v1/services', [ServiceController::class,'index'])->middleware('auth:sanctum');
+Route::post('v1/services', [ServiceController::class,'store'])->middleware('auth:sanctum');
+Route::put('v1/services', [ServiceController::class,'update'])->middleware('auth:sanctum');
+Route::delete('v1/services', [ServiceController::class,'destroy'])->middleware('auth:sanctum');
 
-Route::post('v1/strokeRisk', [\App\Http\Controllers\Api\v1\StrokeRiskController::class,'store'])->middleware('auth:sanctum');
+Route::post('v1/strokeRisk', [StrokeRiskController::class,'store'])->middleware('auth:sanctum');

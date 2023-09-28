@@ -211,7 +211,7 @@ Route::get('baseLine', [BaseLineController::class, 'index'])->name('baseLine.ind
 
 Route::get('files', [FileController::class, 'index'])->name('file.index');
 
-Route::get('dashboard', [DashboardController::class, 'index'])->name('dashboard.index');
+Route::get('dashboard', [DashboardController::class, 'index'])->name('dashboard.index')->middleware('auth');
 
 Route::get('admission/{id}/faskes', [AdmissionController::class, 'index'])->name('admission.index');
 Route::get('admission/{id_user}/{id_customer}', [AdmissionController::class, 'kunjungan'])->name('admission.create');
