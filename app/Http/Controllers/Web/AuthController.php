@@ -185,7 +185,7 @@ class AuthController extends Controller
             $request->session()->regenerate();
             return redirect()->route('profile.index');
         }else{
-            session()->flash('gagal_login', 'Wrong username or password');
+            session()->flash('danger', 'Wrong username or password');
             return redirect()->route('auth.login')->withInput();
         }
     }
@@ -214,8 +214,8 @@ class AuthController extends Controller
             $post=$request->all();
             $api_ext    = env('APP_API_EXTERNAL');
             $url        = $api_ext."/v1/auth/register";
-            $client = new Client();
-            $response = $client->post($url, [
+            $client     = new Client();
+            $response   = $client->post($url, [
                 'form_params' => $post
             ]);
             $statusCode = $response->getStatusCode();
@@ -351,10 +351,25 @@ class AuthController extends Controller
     public function activate_url($nik, $otp)
     {
         $user = User::where([
-            'nik'           => $nik,
-            'aktifasi.otp'  => $otp
-        ])->first();
-        dd($user);
+            'nik'           => (int) $nik,
+            'aktifasi.otp'  => (int) $otp
+        ]);
+        if($user->count() <1 ){
+            echo "OTP dan NIK salah";
+        }else{
+            $data_aktivasi = [
+                'aktifasi'  => [
+                    'otp'   => null,
+                    'exp'   => null
+                ],
+                'active'    => true
+            ];
+            $update = $user->update($data_aktivasi);
+            if($update){
+                session()->flash('success', 'Akun berhasil diaktifkan');
+                return redirect()->route('auth.login');
+            }
+        }
     }
     public function do_activate(Request $request)
     {

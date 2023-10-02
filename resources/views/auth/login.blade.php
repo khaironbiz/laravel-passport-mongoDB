@@ -11,9 +11,10 @@
             </div>
 
             <div class="card-body login-card-body">
-                @if(session('gagal_login') != null)
-                    <p class="login-box-msg text-danger">{{ session('gagal_login') }}</p>
+                @if(session('danger') != null)
+                    <p class="login-box-msg text-danger">{{ session('danger') }}</p>
                 @elseif (session('success') != null)
+                    <p class="login-box-msg text-success">{{ session('success') }}</p>
                 @else
                     <p class="login-box-msg">Sign in to start your session</p>
                 @endif
