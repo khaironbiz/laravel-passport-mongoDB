@@ -26,7 +26,7 @@ class StrokeRiskController extends Controller
             'systole'           => 'required',
             'diastole'          => 'required',
             'heartRate'         => 'required',
-            'atrialFibrilation' => ['required', Rule::in(['iregular', 'i dont know', 'regular'])],
+            'atrialFibrilation' => ['required', Rule::in(['i regular', 'i dont know', 'regular'])],
             'smoking'           => ['required', Rule::in(['yes', 'quite', 'no smoking'])],
             'cholesterol'       => 'required',
             'glucose'           => 'required',
@@ -67,6 +67,26 @@ class StrokeRiskController extends Controller
         }elseif($interpretation_diastole == "Caution" && $interpretation_systole == "Caution"){
             $interpretation_bp = "Caution";
         }
+        //interpretation AF
+        if($request->atrialFibrilation == "i regular"){
+            $interpretation_af = "High Risk";
+        }elseif($request->atrialFibrilation == "i dont know"){
+            $interpretation_af = "Caution";
+        }elseif($request->atrialFibrilation == "regular"){
+            $interpretation_af = "Low Risk";
+        }else{
+            $interpretation_af = null;
+        }
+        // interpretasi smoking
+        if($request->smoking == "yes"){
+            $interpretation_smoking = "High Risk";
+        }elseif($request->smoking == "quite"){
+            $interpretation_smoking = "Caution";
+        }elseif($request->smoking == "no smoking"){
+            $interpretation_smoking = "Low Risk";
+        }else{
+            $interpretation_smoking = null;
+        }
 
         if ($validator->fails()) {
             $status_code    = 422;
@@ -93,7 +113,8 @@ class StrokeRiskController extends Controller
                     ]
                 ],
                 'atrialFibrilation' => [
-                    'result'    => $request->atrialFibrilation,
+                    'result'            => $request->atrialFibrilation,
+                    'interpretation'    => $interpretation_af,
                     'data'      => [
                         'heart_rate'    => [
                             'value'     => (int) $request->heartRate,
@@ -102,8 +123,8 @@ class StrokeRiskController extends Controller
                     ]
                 ],
                 'smoking'           => [
-                    'result'    => $request->smoking,
-
+                    'result'            => $request->smoking,
+                    'interpretation'    => $interpretation_smoking
                 ],
                 'cholesterol'       => [
                     'result'    => (int) $request->cholesterol,

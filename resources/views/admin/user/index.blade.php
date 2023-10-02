@@ -17,8 +17,8 @@
                                 <th>#</th>
                                 <th>Nama</th>
                                 <th>Usia</th>
-                                <th>Email</th>
-                                <th>Phone</th>
+                                <th>Kontak</th>
+                                <th>NIK</th>
                                 <th>Aksi</th>
                                 </thead>
                                 <tbody>
@@ -40,8 +40,8 @@
                                         <td>{{ $loop->iteration }}</td>
                                         <td>{{ $user->nama['nama_depan'] }}</td>
                                         <td>{{  $y . " tahun " . $m . " bulan " . $d . " hari" }}</td>
-                                        <td>{{ $user->kontak['email'] }}</td>
-                                        <td>{{ $user->kontak['nomor_telepon'] }}</td>
+                                        <td>{{ $user->kontak['email'] }} <br> {{ $user->kontak['nomor_telepon'] }}</td>
+                                        <td>{{ $user->nik }}</td>
                                         <td>
                                             <a href="{{ route('users.show', ['id' => $user->id]) }}" class="btn btn-sm btn-info">Detail</a>
                                         </td>
