@@ -36,8 +36,13 @@ class StrokeRiskController extends Controller
             'familyStroke'      => ['required', Rule::in(['yes', 'not sure', 'no'])]
         ]);
         // algoritma untuk blood pressure
-        $systole = (int) $request->systole;
-        $diastole = (int) $request->diastole;
+        $systole            = (int) $request->systole;
+        $diastole           = (int) $request->diastole;
+        $atrial_fibrilasi   = $request->atrialFibrilation;
+        $smoking            = $request->smoking;
+        $cholesterol        = (int) $request->cholesterol;
+        $glucose            = (int) $request->glucose;
+
         if( $systole >= 140){
             $result_systole = ">= 140";
             $interpretation_systole = "High Risk";
@@ -68,25 +73,46 @@ class StrokeRiskController extends Controller
             $interpretation_bp = "Caution";
         }
         //interpretation AF
-        if($request->atrialFibrilation == "i regular"){
+        if($atrial_fibrilasi == "i regular"){
             $interpretation_af = "High Risk";
-        }elseif($request->atrialFibrilation == "i dont know"){
+        }elseif($atrial_fibrilasi == "i dont know"){
             $interpretation_af = "Caution";
-        }elseif($request->atrialFibrilation == "regular"){
+        }elseif($atrial_fibrilasi == "regular"){
             $interpretation_af = "Low Risk";
         }else{
             $interpretation_af = null;
         }
         // interpretasi smoking
-        if($request->smoking == "yes"){
+        if($smoking == "yes"){
             $interpretation_smoking = "High Risk";
-        }elseif($request->smoking == "quite"){
+        }elseif($smoking == "quite"){
             $interpretation_smoking = "Caution";
-        }elseif($request->smoking == "no smoking"){
+        }elseif($smoking == "no smoking"){
             $interpretation_smoking = "Low Risk";
         }else{
             $interpretation_smoking = null;
         }
+
+        //$cholesterol
+        if($cholesterol  >=240){
+            $interpretation_cholestorole = "High Risk";
+        }elseif($cholesterol  > 200){
+            $interpretation_cholestorole = "Caution";
+        }elseif($cholesterol  < 200){
+            $interpretation_cholestorole = "Low Risk";
+        }else{
+            $interpretation_cholestorole = null;
+        }
+
+        //glucose
+        if($glucose >= 200){
+            $interpretation_glucose = "High Risk";
+        }elseif($glucose > 150) {
+            $interpretation_glucose = "Caution";
+        }elseif($glucose < 150){
+            $interpretation_glucose = "Low Risk";
+        }
+
 
         if ($validator->fails()) {
             $status_code    = 422;
@@ -99,7 +125,7 @@ class StrokeRiskController extends Controller
                 'id_pasien'     => Auth::id(),
                 'date'          => time(),
                 'blood_pressure'    => [
-                    'result'    => (int) $request->systole."/".(int) $request->diastole." mmHg",
+                    'result'            => $systole."/".$diastole." mmHg",
                     'interpretation'    => $interpretation_bp,
                     'data'      => [
                         'systole'   => [
@@ -113,7 +139,7 @@ class StrokeRiskController extends Controller
                     ]
                 ],
                 'atrialFibrilation' => [
-                    'result'            => $request->atrialFibrilation,
+                    'result'            => $atrial_fibrilasi,
                     'interpretation'    => $interpretation_af,
                     'data'      => [
                         'heart_rate'    => [
@@ -123,20 +149,22 @@ class StrokeRiskController extends Controller
                     ]
                 ],
                 'smoking'           => [
-                    'result'            => $request->smoking,
+                    'result'            => $smoking,
                     'interpretation'    => $interpretation_smoking
                 ],
                 'cholesterol'       => [
-                    'result'    => (int) $request->cholesterol,
+                    'result'            => $cholesterol,
+                    'interpretation'    =>$interpretation_cholestorole,
                     'data'      => [
                         'cholesterol'   => [
-                            'value'     => (int) $request->cholesterol,
+                            'value'     => $cholesterol,
                             'unit'      => 'mg/dL',
                         ]
                     ]
                 ],
                 'glucose'    => [
                     'result'    => (int) $request->glucose,
+                    'interpretation'    =>$interpretation_glucose,
                     'data'      => [
                         'glucoseFasting'   => [
                             'value'     => (int) $request->glucose,
