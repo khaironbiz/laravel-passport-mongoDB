@@ -38,11 +38,15 @@ class StrokeRiskController extends Controller
         // algoritma untuk blood pressure
         $systole            = (int) $request->systole;
         $diastole           = (int) $request->diastole;
-        $atrial_fibrilasi   = $request->atrialFibrilation;
-        $smoking            = $request->smoking;
+        $atrial_fibrilasi   = (string) $request->atrialFibrilation;
+        $smoking            = (string) $request->smoking;
         $cholesterol        = (int) $request->cholesterol;
         $glucose            = (int) $request->glucose;
-
+        $exercise           = (int) $request->exercise;
+        $bodyWeight         = (double) $request->bodyWeight;
+        $bodyLength         = (double) $request->bodyLength;
+        $bmi                = round ($bodyWeight/($bodyLength*$bodyLength)*10000,2);
+        $familyStroke       = (string) $request->familyStroke;
         if( $systole >= 140){
             $result_systole = ">= 140";
             $interpretation_systole = "High Risk";
@@ -113,6 +117,57 @@ class StrokeRiskController extends Controller
             $interpretation_glucose = "Low Risk";
         }
 
+        // exercise
+        if($exercise <= 50 ){
+            $interpretation_exercise = "High Risk";
+        }elseif ($exercise < 150){
+            $interpretation_exercise = "Caution";
+        }elseif ($exercise >= 150){
+            $interpretation_exercise = "Low Risk";
+        }else{
+            $interpretation_exercise = null;
+        }
+        // bmi
+        if($bmi >=25 ){
+            $interpretation_bmi = "High Risk";
+        }elseif($bmi >=23){
+            $interpretation_bmi = "Caution";
+        }elseif($bmi < 23){
+            $interpretation_bmi = "Low Risk";
+        }else{
+            $interpretation_bmi = null;
+        }
+
+        // family risk
+        if($familyStroke){
+            $interpretation_family = "High Risk";;
+        }elseif ($familyStroke){
+            $interpretation_family = "Caution";
+        }elseif ($familyStroke){
+            $interpretation_family = "Low Risk";
+        }else{
+            $interpretation_family = null;
+        }
+
+        $interpretation = [
+            $interpretation_bp,
+            $interpretation_af,
+            $interpretation_smoking,
+            $interpretation_cholestorole,
+            $interpretation_glucose,
+            $interpretation_exercise,
+            $interpretation_bmi,
+            $interpretation_family
+        ];
+        $count_interpretation = array_count_values($interpretation);
+        if($count_interpretation['High Risk'] >= 3){
+            $stroke_risk = 'High Risk';
+        }elseif($count_interpretation['Caution'] >= 4){
+            $stroke_risk = 'Caution';
+        }else{
+            $stroke_risk = 'Low Risk';
+        }
+
 
         if ($validator->fails()) {
             $status_code    = 422;
@@ -124,79 +179,87 @@ class StrokeRiskController extends Controller
             $data_stroke_risk = [
                 'id_pasien'     => Auth::id(),
                 'date'          => time(),
-                'blood_pressure'    => [
-                    'result'            => $systole."/".$diastole." mmHg",
-                    'interpretation'    => $interpretation_bp,
-                    'data'      => [
-                        'systole'   => [
-                            'value'     => (int) $request->systole,
-                            'unit'      => 'mmHg',
-                        ],
-                        'diastole'  => [
-                            'value'     => (int) $request->diastole,
-                            'unit'      => 'mmHg',
-                        ],
-                    ]
-                ],
-                'atrialFibrilation' => [
-                    'result'            => $atrial_fibrilasi,
-                    'interpretation'    => $interpretation_af,
-                    'data'      => [
-                        'heart_rate'    => [
-                            'value'     => (int) $request->heartRate,
-                            'unit'      => 'beat/minute',
-                        ],
-                    ]
-                ],
-                'smoking'           => [
-                    'result'            => $smoking,
-                    'interpretation'    => $interpretation_smoking
-                ],
-                'cholesterol'       => [
-                    'result'            => $cholesterol,
-                    'interpretation'    =>$interpretation_cholestorole,
-                    'data'      => [
-                        'cholesterol'   => [
-                            'value'     => $cholesterol,
-                            'unit'      => 'mg/dL',
+                'result'        => $count_interpretation,
+                'interpretation'=> $stroke_risk,
+                'data'          => [
+                    'blood_pressure'    => [
+                        'result'            => $systole."/".$diastole." mmHg",
+                        'interpretation'    => $interpretation_bp,
+                        'data'      => [
+                            'systole'   => [
+                                'value'     => (int) $request->systole,
+                                'unit'      => 'mmHg',
+                            ],
+                            'diastole'  => [
+                                'value'     => (int) $request->diastole,
+                                'unit'      => 'mmHg',
+                            ],
                         ]
-                    ]
-                ],
-                'glucose'    => [
-                    'result'    => (int) $request->glucose,
-                    'interpretation'    =>$interpretation_glucose,
-                    'data'      => [
-                        'glucoseFasting'   => [
-                            'value'     => (int) $request->glucose,
-                            'unit'      => 'mg/dL',
+                    ],
+                    'atrialFibrilation' => [
+                        'result'            => $atrial_fibrilasi,
+                        'interpretation'    => $interpretation_af,
+                        'data'      => [
+                            'heart_rate'    => [
+                                'value'     => (int) $request->heartRate,
+                                'unit'      => 'beat/minute',
+                            ],
                         ]
-                    ]
-                ],
-                'exercise'          => [
-                    'result'    => $request->exercise,
-                    'data'      => [
-                        'exercise'   => [
-                            'value'     => $request->exercise,
-                            'unit'      => 'minutes',
+                    ],
+                    'smoking'           => [
+                        'result'            => $smoking,
+                        'interpretation'    => $interpretation_smoking
+                    ],
+                    'cholesterol'       => [
+                        'result'            => $cholesterol,
+                        'interpretation'    =>$interpretation_cholestorole,
+                        'data'      => [
+                            'cholesterol'   => [
+                                'value'     => $cholesterol,
+                                'unit'      => 'mg/dL',
+                            ]
                         ]
-                    ]
-                ],
-                'bmi'               => [
-                    'result'    => round (((int)$request->bodyWeight/((int)$request->bodyLength*(int)$request->bodyLength)*10000),2),
-                    'data'      => [
-                        'bodyWeight'   => [
-                            'value'     => $request->bodyWeight,
-                            'unit'      => 'Kg',
-                        ],
-                        'bodyLength'   => [
-                            'value'     => $request->bodyLength,
-                            'unit'      => 'cm',
+                    ],
+                    'glucose'           => [
+                        'result'    => $glucose,
+                        'interpretation'    =>$interpretation_glucose,
+                        'data'      => [
+                            'glucoseFasting'   => [
+                                'value'     => $glucose,
+                                'unit'      => 'mg/dL',
+                            ]
                         ]
-                    ]
-                ],
-                'familyStroke'      => [
-                    'result'    => $request->familyStroke
-                ],
+                    ],
+                    'exercise'          => [
+                        'result'    => $exercise,
+                        'interpretation'    => $interpretation_exercise,
+                        'data'      => [
+                            'exercise'   => [
+                                'value'     => $exercise,
+                                'unit'      => 'minutes',
+                            ]
+                        ]
+                    ],
+                    'bmi'               => [
+                        'result'    => $bmi,
+                        'interpretation'    => $interpretation_bmi,
+                        'data'      => [
+                            'bodyWeight'   => [
+                                'value'     => $bodyWeight,
+                                'unit'      => 'Kg',
+                            ],
+                            'bodyLength'   => [
+                                'value'     => $bodyLength,
+                                'unit'      => 'cm',
+                            ]
+                        ]
+                    ],
+                    'familyStroke'      => [
+                        'result'    => $familyStroke,
+                        'interpretation'    => $interpretation_family
+                    ],
+                ]
+
             ];
             $status_code    = 201;
             $message        = "Created";
