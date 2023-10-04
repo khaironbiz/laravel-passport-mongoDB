@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api\v1;
 
 use App\Http\Controllers\Controller;
 use App\Models\StrokeRisk;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
@@ -35,6 +36,9 @@ class StrokeRiskController extends Controller
             'bodyLength'        => 'required',
             'familyStroke'      => ['required', Rule::in(['yes', 'not sure', 'no'])]
         ]);
+        // user
+        $id_pasien = $request->id_pasien;
+        $user = User::find($id_pasien);
         // algoritma untuk blood pressure
         $systole            = (int) $request->systole;
         $diastole           = (int) $request->diastole;
@@ -175,9 +179,15 @@ class StrokeRiskController extends Controller
             $data = [
                 'errors' => $validator->errors(),
             ];
+        }elseif(empty($user)){
+            $status_code    = 404;
+            $message        = "Id Pasien Salah";
+            $data           = [
+                'user'      => $user
+            ];
         }else{
             $data_stroke_risk = [
-                'id_pasien'     => Auth::id(),
+                'id_pasien'     => $id_pasien,
                 'date'          => time(),
                 'result'        => $count_interpretation,
                 'interpretation'=> $stroke_risk,
@@ -261,13 +271,19 @@ class StrokeRiskController extends Controller
                 ]
 
             ];
-            $status_code    = 201;
-            $message        = "Created";
-            $data = [
-                'errors'    => $validator->errors(),
-                'input'     => $request->all(),
+            $update_user = $user->update([
                 'stroke_risk'   => $data_stroke_risk
-            ];
+            ]);
+            if($update_user){
+
+                $status_code    = 201;
+                $message        = "Created";
+                $data = [
+                    'errors'    => $validator->errors(),
+                    'input'     => $request->all(),
+                    'stroke_risk'   => $data_stroke_risk
+                ];
+            }
         }
         $data_post   = [
             'status_code'   => $status_code,
