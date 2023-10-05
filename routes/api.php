@@ -236,4 +236,5 @@ Route::post('v1/services', [ServiceController::class,'store'])->middleware('auth
 Route::put('v1/services', [ServiceController::class,'update'])->middleware('auth:sanctum');
 Route::delete('v1/services', [ServiceController::class,'destroy'])->middleware('auth:sanctum');
 
-Route::post('v1/strokeRisk', [StrokeRiskController::class,'store'])->middleware('auth:sanctum');
+Route::put('v1/strokeRisk', [StrokeRiskController::class,'store'])->middleware('auth:sanctum');
+Route::get('v1/strokeRisk', [StrokeRiskController::class,'pasien'])->middleware('auth:sanctum');
