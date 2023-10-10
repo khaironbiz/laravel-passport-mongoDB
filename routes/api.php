@@ -108,6 +108,7 @@ Route::put('/v1/user/update', [UserController::class,'update'])->middleware('aut
 Route::get('/v1/user/{nik}', [UserController::class, 'showNik'])->middleware('auth:sanctum');
 Route::post('/v1/user/find/nik', [UserController::class, 'find'])->middleware('auth:sanctum');
 Route::post('/v1/user/find/email', [UserController::class, 'findByemail'])->middleware('auth:sanctum');
+Route::post('/v1/user/find/phone', [UserController::class, 'findByPhone'])->middleware('auth:sanctum');
 Route::delete('/v1/user', [UserController::class, 'destroy'])->middleware('auth:sanctum');
 Route::put('/v1/user/restored', [UserController::class, 'restore'])->middleware('auth:sanctum');
 

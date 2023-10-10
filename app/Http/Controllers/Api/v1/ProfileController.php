@@ -49,7 +49,7 @@ class ProfileController extends Controller
                 ],
             ];
         }else{
-            $alamat = "";
+            $alamat = null;
         }
 
         $data_user = [

@@ -189,7 +189,6 @@ class AuthController extends Controller
             return redirect()->route('auth.login')->withInput();
         }
     }
-
     public function register()
     {
         return view('auth.register');

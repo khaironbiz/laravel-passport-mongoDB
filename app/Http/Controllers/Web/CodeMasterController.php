@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Code;
 use GuzzleHttp\Client;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Validator;
 
 class CodeMasterController extends Controller
@@ -69,25 +70,27 @@ class CodeMasterController extends Controller
                 session()->flash('success', 'Success, data saved');
                 return redirect()->back();
             }
-//            $category_db = Code::where('code',$request->category)->first();
-//            $category = [
-//                'code'      => $category_db->code,
-//                'system'    => $category_db->system,
-//                'display'   => $category_db->display
-//            ];
-//            $input      = [
-//                'code'      => $request->code,
-//                'system'    => $request->system,
-//                'display'   => $request->display,
-//                'category'  => $category
-//            ];
-//
-//            $code       = new Code();
-//            $create     = $code->insert($input);
-//            if($create){
-//                session()->flash('success', 'Success, data saved');
-//                return redirect()->back();
-//            }
+            // Replace 'YOUR_API_ENDPOINT' with the actual API URL you want to call.
+            $apiEndpoint = 'https://api.example.com/data';
+
+            try {
+                $response = Http::get($apiEndpoint);
+
+                // Check if the request was successful (status code 2xx).
+                if ($response->successful()) {
+                    // You can access the API response data as an array or JSON.
+                    $responseData = $response->json();
+
+                    // Process the response data as needed.
+                    return response()->json($responseData);
+                } else {
+                    // Handle unsuccessful response (e.g., non-2xx status code).
+                    return response()->json(['error' => 'API request failed'], $response->status());
+                }
+            } catch (\Exception $e) {
+                // Handle exceptions (e.g., connection errors, timeouts, etc.).
+                return response()->json(['error' => 'API request failed: ' . $e->getMessage()], 500);
+            }
         }
     }
     public function show($id)

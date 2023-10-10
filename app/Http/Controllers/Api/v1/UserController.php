@@ -219,6 +219,54 @@ class UserController extends Controller
         return response()->json($data, $status_code);
 
     }
+    public function findByPhone(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'nomor_telepon' => 'required|numeric'
+        ]);
+        $nomor_telepon    = $request->nomor_telepon;
+        $user   = User::where('kontak.nomor_telepon', $nomor_telepon)->first();
+
+        if ($validator->fails()) {
+            $status_code    = 422;
+            $message        = "Gagal validasi";
+            $data           = [
+                "errors" => $validator->errors(),
+            ];
+
+        }elseif (empty($user)){
+            $status_code    = 404;
+            $message        = "Nomor Telepon Salah";
+            $data           = [
+                'user'      => $user
+            ];
+
+        }else{
+            $status_code    = 200;
+            $message        = "success";
+            $data           = [
+                'user'      => [
+                    'id'        => $user->_id,
+                    'nik'       => $user->nik,
+                    "nama"      => $user->nama,
+                    'gender'    => $user->gender,
+                    'gelar'     => $user->gelar,
+                    'lahir'     => $user->lahir,
+                    'kontak'    => $user->kontak,
+                    'active'    => $user->active
+                ]
+            ];
+        }
+
+        $data_respons = [
+            "status_code"   => $status_code,
+            "message"       => $message,
+            "data"          => $data
+
+        ];
+        return response()->json($data_respons, $status_code);
+
+    }
     public function showNik($nik)
     {
         $user_query = User::where('nik', (int)$nik);

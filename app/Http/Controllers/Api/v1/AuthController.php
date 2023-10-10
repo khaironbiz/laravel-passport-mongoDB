@@ -417,7 +417,19 @@ class AuthController extends Controller
             'tanggal_lahir'     => 'required|date'
 
         ]);
-        if($validator->fails()){
+        $nik = (int) $request->nik;
+        $user_by_nik = User::where('nik', $nik);
+        if($user_by_nik->count() > 0 ){
+            $status_code    = 422;
+            $data           = [
+                "status_code"   => $status_code,
+                "message"       => "NIK sudah terdaftar, gunakan NIK lain atau langsung login",
+                "data"          => [
+                    "errors"    => $validator->errors()
+                ]
+            ];
+            return response()->json($data, $status_code);
+        }elseif($validator->fails()){
             $status_code    = 422;
             $data           = [
                 "status_code"   => $status_code,
