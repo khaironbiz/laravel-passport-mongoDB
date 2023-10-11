@@ -2,7 +2,7 @@
     <div class="row mb-1">
         <label class="col-sm-3">Code</label>
         <div class="col-sm-9">
-            <input type="text" class="form-control" name="code" value="{{ $code->code, old('code') }}">
+            <input type="text" class="form-control" name="code" value="{{ old('code', $code->code) }}">
             @error('code')
             <small class="text-danger">{{$message}}</small>
             @enderror
@@ -11,7 +11,7 @@
     <div class="row mb-1">
         <label class="col-sm-3">System</label>
         <div class="col-sm-9">
-            <input type="text" class="form-control" name="system" value="{{ $code->system, old('system') }}">
+            <input type="text" class="form-control" name="system" value="{{  old('system', $code->system) }}">
             @error('system')
             <small class="text-danger">{{$message}}</small>
             @enderror
@@ -20,7 +20,7 @@
     <div class="row mb-1">
         <label class="col-sm-3">Display</label>
         <div class="col-sm-9">
-            <input type="text" class="form-control" name="display" value="{{ $code->display, old('display') }}">
+            <input type="text" class="form-control" name="display" value="{{ old('display', $code->display) }}">
             @error('display')
             <small class="text-danger">{{$message}}</small>
             @enderror

@@ -52,44 +52,48 @@ class CodeMasterController extends Controller
                 ->withInput();
         }else{
             $url        = "https://dev.atm-sehat.com/api/v1/codes";
-            $header = [
-                'Authorization' => "Bearer $session_token",
+            $post       = [
+                'code'      => $request->code,
+                'system'    => $request->system,
+                'display'   => $request->display,
+                'category'  => $request->category
             ];
-            $client     = new Client();
-            $response   = $client->post($url, [
-                'headers' => $header,
-                'form_params' => [
-                    'code'      => $request->code,
-                    'system'    => $request->system,
-                    'display'   => $request->display,
-                    'category'  => $request->category
-                ]
+            $bearer = Http::withHeaders([
+                'Authorization' => 'Bearer '.$session_token,
+                'Content-Type' => 'application/json',
             ]);
-            $statusCode = $response->getStatusCode();
-            if($statusCode == 201){
-                session()->flash('success', 'Success, data saved');
-                return redirect()->back();
-            }
-            // Replace 'YOUR_API_ENDPOINT' with the actual API URL you want to call.
-            $apiEndpoint = 'https://api.example.com/data';
 
             try {
-                $response = Http::get($apiEndpoint);
+                $response = $bearer->post( $url, $post );
 
                 // Check if the request was successful (status code 2xx).
                 if ($response->successful()) {
                     // You can access the API response data as an array or JSON.
-                    $responseData = $response->json();
-
-                    // Process the response data as needed.
-                    return response()->json($responseData);
+//                    $responseData = $response->json();
+//
+//                    // Process the response data as needed.
+//                    return response()->json($responseData);
+                    session()->flash('success', 'Success, data saved');
+                return redirect()->back();
                 } else {
+                    $data = json_decode($response->body());
+                    session()->flash('danger', $data->message);
+                    return redirect()->back()->withInput();
+
+//                    $responseData = $response->json();
+//                    $array = json_encode($responseData);
+//                    session()->flash('danger', $array->message);
+//                    return redirect()->back();
                     // Handle unsuccessful response (e.g., non-2xx status code).
-                    return response()->json(['error' => 'API request failed'], $response->status());
+//                    return response()->json(['message' => $data->message], $response->status());
                 }
             } catch (\Exception $e) {
+                $responseData = $response->json();
+                $array = json_decode($responseData);
+                session()->flash('danger', $array->message);
+                return redirect()->back();
                 // Handle exceptions (e.g., connection errors, timeouts, etc.).
-                return response()->json(['error' => 'API request failed: ' . $e->getMessage()], 500);
+//                return response()->json(['error' => 'API request failed: ' . $e->getMessage()], 500);
             }
         }
     }
