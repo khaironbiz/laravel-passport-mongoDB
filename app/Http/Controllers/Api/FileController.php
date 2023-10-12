@@ -14,11 +14,8 @@ class FileController extends Controller
 {
     public function index(Request $request)
     {
-        if(isset($_GET['id'])){
-            $file = File::where('user_id', $_GET['id'])->get();
-        }else{
-            $file = File::all();
-        }
+
+        $file = File::all();
 
         if(empty($file)){
             $status_code    = 404;

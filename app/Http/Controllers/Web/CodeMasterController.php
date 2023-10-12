@@ -75,9 +75,8 @@ class CodeMasterController extends Controller
                     return redirect()->back()->withInput();
                 }
             } catch (\Exception $e) {
-                $responseData = $response->json();
-                $array = json_decode($responseData);
-                session()->flash('danger', $array->message);
+                $data = json_decode($response->body());
+                session()->flash('danger', $data->message);
                 return redirect()->back()->withInput();
 
             }

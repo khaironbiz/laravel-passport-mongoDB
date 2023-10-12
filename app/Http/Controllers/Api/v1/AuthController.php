@@ -244,9 +244,7 @@ class AuthController extends Controller
                 $sending_wa     = $this->sending_whatsapp($request->nomor_telepon, $message);
                 $status_code    = 200;
                 $message        = "success";
-                $data = [
-                    'user' => $user,
-                ];
+                $data = [];
             }else{
                 $status_code    = 404;
                 $message        = "Not Found";
