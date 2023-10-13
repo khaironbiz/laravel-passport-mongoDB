@@ -239,3 +239,4 @@ Route::delete('v1/services', [ServiceController::class,'destroy'])->middleware('
 
 Route::put('v1/strokeRisk', [StrokeRiskController::class,'store'])->middleware('auth:sanctum');
 Route::get('v1/strokeRisk', [StrokeRiskController::class,'pasien'])->middleware('auth:sanctum');
+Route::patch('v1/strokeRisk', [StrokeRiskController::class,'update'])->middleware('auth:sanctum');
