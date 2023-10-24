@@ -204,7 +204,7 @@ class AuthController extends Controller
                             'time'      => time()
                         ]
                     ];
-                    $sending_mail = dispatch(new LoginNotificationJob($data_email));
+//                    $sending_mail = dispatch(new LoginNotificationJob($data_email));
                     $receiver   = $user->kontak['nomor_telepon'];
                     $message    = 'Berhasil Login sebagai petugas pada waktu '. date('d-m-Y H:i');
                     $sending_wa = $this->sending_whatsapp($receiver, $message);
