@@ -14,7 +14,7 @@ use Illuminate\Support\Facades\Validator;
 class LinkedUserController extends Controller
 {
     public function index(){
-        $user       = User::where('family.id_induk', Auth::id())->orderBy('lahir.tanggal', 'DESC');
+        $user       = User::where('family.id_induk', Auth::id())->where('status','!=', true)->orderBy('lahir.tanggal', 'DESC');
         $family     = FamilyResource::collection($user->get());
         if($user->count() < 1){
             $status_code = 404;
@@ -177,7 +177,11 @@ class LinkedUserController extends Controller
         $id_user    = $request->id_user;
         $user       = User::find($id_user);
         $unlink     = [
-            "family"    => null
+            "family"    => [
+                "id_induk"  => $user->family['id_induk'],
+                "hubungan_keluarga"  => $user->family['hubungan_keluarga'],
+                "is_active" => false
+            ]
         ];
         $update     = $user->update($unlink);
         $status_code = 200;
