@@ -19,8 +19,8 @@ class LinkedUserController extends Controller
         if($user->count() < 1){
             $status_code = 404;
             $data   = [
-                "status"        => "Not Found",
                 "status_code"   => 404,
+                "message"       => "Not Found",
                 "data"          => [
                     'count'     => $user->count(),
                     'family'    => $family,
@@ -30,8 +30,8 @@ class LinkedUserController extends Controller
         }else{
             $status_code = 200;
             $data   = [
-                "status"        => "success",
                 "status_code"   => 200,
+                "message"       => "success",
                 "data"          => [
                     'count'     => $user->count(),
                     'family'    => $family,
