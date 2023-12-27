@@ -8,8 +8,8 @@ use Illuminate\Auth\Authenticatable;
 use Jenssegers\Mongodb\Eloquent\Model as Eloquent;
 use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
 use Illuminate\Notifications\Notifiable;
-use Laravel\Sanctum\HasApiTokens;
 use Jenssegers\Mongodb\Eloquent\SoftDeletes;
+use Laravel\Passport\HasApiTokens;
 
 
 class User extends Eloquent implements AuthenticatableContract

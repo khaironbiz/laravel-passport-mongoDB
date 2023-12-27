@@ -2,10 +2,9 @@
 
 namespace App\Http\Resources;
 
-use App\Models\Question;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class QuestionnaireResource extends JsonResource
+class ProductResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -15,11 +14,12 @@ class QuestionnaireResource extends JsonResource
      */
     public function toArray($request)
     {
-        $question = Question::where('questionnaire.id', $this->_id);
         return [
-            'id'      => $this->_id,
-            'judul'    => $this->judul,
-            'question'   => $question->count()
+            'id' => $this->id,
+            'name' => $this->name,
+            'detail' => $this->detail,
+            'created_at' => $this->created_at,
+            'updated_at' => $this->updated_at,
         ];
     }
 }
