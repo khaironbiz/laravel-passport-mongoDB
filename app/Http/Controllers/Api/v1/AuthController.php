@@ -28,10 +28,10 @@ class AuthController extends Controller
     public function register(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'name' => 'required',
-            'email' => 'required|email',
-            'password' => 'required',
-            'c_password' => 'required|same:password',
+            'name'          => 'required',
+            'email'         => 'required|email|unique:users,email',
+            'password'      => 'required',
+            'c_password'    => 'required|same:password',
         ]);
 
         if($validator->fails()){
@@ -56,7 +56,7 @@ class AuthController extends Controller
             return $this->sendResponse($success, 'User login successfully.');
         }
         else{
-            return $this->sendError('Unauthorised.', ['error'=>'Unauthorised']);
+            return $this->sendError('Unauthorised.', ['error'=>'Username and password not match']);
         }
     }
 

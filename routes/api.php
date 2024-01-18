@@ -27,4 +27,7 @@ Route::post('createToken', [\App\Http\Controllers\Api\v1\ClientController::class
 Route::middleware('auth:api')->group( function () {
     Route::resource('products', ProductController::class);
     Route::get('client', [\App\Http\Controllers\Api\v1\ClientController::class, 'index']);
+
+    //users
+    Route::post('user/find/email', [\App\Http\Controllers\Api\v1\UserController::class, 'findByEmail']);
 });

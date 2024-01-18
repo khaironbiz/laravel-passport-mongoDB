@@ -22,9 +22,15 @@ class ClientController extends Controller
         }elseif($client->secret != $request->client_secret){
             return $this->sendError('Invalid Secret Key', 'Invalid Secret Key');
         }else{
-            $user = User::find($client->user_id);
-            $success['token'] =  $user->createToken('MyApp')-> accessToken;
-            return $this->sendResponse($success, "User login successfully");
+            $user               = User::find($client->user_id);
+            if(empty($user)){
+                $token['token'] = null;
+                $message = "Anda tidak memiliki klien";
+            }else{
+                $token['token'] = $user->createToken('MyApp')-> accessToken;
+                $message = "User login successfully";
+            }
+            return $this->sendResponse($token, $message);
         }
 
     }
