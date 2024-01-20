@@ -7,6 +7,8 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
+use Laravel\Passport\RefreshTokenRepository;
+use Laravel\Passport\TokenRepository;
 
 class AuthController extends Controller
 {
@@ -25,30 +27,10 @@ class AuthController extends Controller
 
     }
 
-    public function register(Request $request)
-    {
-        $validator = Validator::make($request->all(), [
-            'name'          => 'required',
-            'email'         => 'required|email|unique:users,email',
-            'password'      => 'required',
-            'c_password'    => 'required|same:password',
-        ]);
 
-        if($validator->fails()){
-            return $this->sendError('Validation Error.', $validator->errors());
-        }
-
-        $input = $request->all();
-        $input['password'] = bcrypt($input['password']);
-        $user = User::create($input);
-        $success['token'] =  $user->createToken('MyApp')->accessToken;
-        $success['name'] =  $user->name;
-
-        return $this->sendResponse($success, 'User register successfully.');
-    }
     public function login(Request $request)
     {
-        if(Auth::attempt(['email' => $request->email, 'password' => $request->password])){
+        if(Auth::attempt(['username' => $request->username, 'password' => $request->password])){
             $user = Auth::user();
             $success['token'] =  $user->createToken('MyApp')-> accessToken;
             $success['name'] =  $user->name;
@@ -59,6 +41,22 @@ class AuthController extends Controller
             return $this->sendError('Unauthorised.', ['error'=>'Username and password not match']);
         }
     }
+    public function revoke(Request $request){
+        $tokenId = $request->token_id;
+        $tokenRepository = app(TokenRepository::class);
+        $refreshTokenRepository = app(RefreshTokenRepository::class);
+        // Revoke an access token...
+        $revoke = $tokenRepository->revokeAccessToken($tokenId);
+        // Revoke all of the token's refresh tokens...
+//        $refreshTokenRepository->revokeRefreshTokensByAccessTokenId($tokenId);
+        if($revoke){
+            return $this->sendResponse('success','deleted');
+        }
+        return $this->sendError('failed','failed');
+
+    }
+
+
 
 
 }

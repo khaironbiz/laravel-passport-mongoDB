@@ -24,7 +24,13 @@ class RegisterRequest extends FormRequest
     public function rules()
     {
         return [
-            //
+            'nama_depan'    => 'required',
+            'nama_belakang' => 'required',
+            'email'         => 'required|email|unique:users,kontak.email',
+            'password'      => 'required',
+            'c_password'    => 'required|same:password',
+            'tempat_lahir'  => 'required',
+            'tanggal_lahir' => 'required|date',
         ];
     }
 }

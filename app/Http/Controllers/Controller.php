@@ -63,4 +63,19 @@ class Controller extends BaseController
 
         return response()->json($response, $code);
     }
+    public function validationError($error, $errorMessages = [], $code = 422)
+    {
+        $response = [
+            'success' => false,
+            'message' => $error,
+        ];
+
+
+        if(!empty($errorMessages)){
+            $response['data'] = $errorMessages;
+        }
+
+
+        return response()->json($response, $code);
+    }
 }
