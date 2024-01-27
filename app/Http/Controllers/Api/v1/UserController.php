@@ -4,9 +4,8 @@ namespace App\Http\Controllers\Api\v1;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Auth\RegisterRequest;
 use App\Models\User;
-use App\Service\Consultant\ConsultantService;
-use App\Service\HealthOverview\HealthOverviewService;
-use App\Service\Users\UserService;
+
+use App\Services\User\UserService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
@@ -15,11 +14,9 @@ use Laravel\Passport\TokenRepository;
 
 class UserController extends Controller
 {
-
-
     private UserService $userService;
-    public function __construct() {
-        $this->userService = new UserService();
+    public function __construct(UserService $userService) {
+        $this->userService = $userService;
     }
     public function register(Request $request)
     {
@@ -40,13 +37,19 @@ class UserController extends Controller
         return $this->sendResponse($user, 'User register successfully.');
     }
     public function findByEmail(Request $request){
-        $email = $request->email;
-        $user = $this->userService->findByEmail($email);
-        return response()->json($user);
+        $email  = $request->email;
+        $result = $this->userService->findByEmail($email);
+        return $this->sendResponse($result, 'success');
+    }
+    public function findByNIK(Request $request){
+        $nik    = $request->nik;
+        $result = $this->userService->findByNIK($nik);
+        return $this->sendResponse($result, 'success');
     }
     public function profile(){
-        $user = Auth::user();
-        return response()->json($user);
+        $user_id = Auth::id();
+        $user = $this->userService->profile($user_id);
+        return $this->sendResponse($user, 'success');
     }
 
 }

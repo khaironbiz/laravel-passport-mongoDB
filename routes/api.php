@@ -31,6 +31,7 @@ Route::middleware('auth:api')->group( function () {
     //users
     Route::get('user/profile', [\App\Http\Controllers\Api\v1\UserController::class, 'profile']);
     Route::post('user/find/email', [\App\Http\Controllers\Api\v1\UserController::class, 'findByEmail']);
+    Route::post('user/find/nik', [\App\Http\Controllers\Api\v1\UserController::class, 'findByNIK']);
 
     //client
     Route::get('client/mine', [\App\Http\Controllers\Api\v1\ClientController::class, 'mine']);
