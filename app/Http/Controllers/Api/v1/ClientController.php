@@ -26,8 +26,8 @@ class ClientController extends Controller
             "user_id"       => $request->user_id,
             "name"          => $request->client_name,
             "secret"        => $client_secret,
-            "provider"      => "users",
-            "redirect"      => $request->redirect,
+            "provider"                  => "users",
+            "redirect"                  => $request->redirect,
             "personal_access_client"    => false,
             "password_client"           => true,
             "revoked"                   => false

@@ -43,6 +43,7 @@ class AuthController extends Controller
     }
     public function revoke(Request $request){
         $tokenId = $request->token_id;
+
         $tokenRepository = app(TokenRepository::class);
         $refreshTokenRepository = app(RefreshTokenRepository::class);
         // Revoke an access token...
