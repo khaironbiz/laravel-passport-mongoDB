@@ -7,7 +7,7 @@ use Jenssegers\Mongodb\Eloquent\Model;
 use Jenssegers\Mongodb\Eloquent\SoftDeletes;
 use Laravel\Passport\HasApiTokens;
 
-class Observation extends Model
+class Kit extends Model
 {
     use SoftDeletes, HasApiTokens, HasFactory;
     protected $guarded      = [];

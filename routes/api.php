@@ -38,4 +38,9 @@ Route::middleware('auth:api')->group( function () {
 
     //token
     Route::post('token/revoke', [AuthController::class,'revoke']);
+
+    //diastole
+    Route::get('observation/diastole/patient', [\App\Http\Controllers\Api\v1\ObservationController::class, 'get_systole']);
+    Route::get('observation/show', [\App\Http\Controllers\Api\v1\ObservationController::class, 'show']);
+    Route::post('observation/diastole', [\App\Http\Controllers\Api\v1\ObservationController::class, 'store']);
 });

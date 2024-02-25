@@ -18,6 +18,15 @@ class UserServiceImplement extends Service implements UserService{
     {
       $this->mainRepository = $mainRepository;
     }
+
+    public function findByIdShort($user_id){
+        try {
+            return $this->mainRepository->findByIdShort($user_id);
+        }catch (\Exception $exception){
+            Log::debug($exception->getMessage());
+            return [];
+        }
+    }
     public function findByEmail($email){
         try {
             return $this->mainRepository->findByEmail($email);

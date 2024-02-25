@@ -18,6 +18,12 @@ class UserRepositoryImplement extends Eloquent implements UserRepository{
     {
         $this->model = $model;
     }
+
+    public function findByIdShort(string $user_id){
+        $user       = $this->model->where('_id',$user_id)->first();
+        $data_user  = $this->__userShort($user);
+        return $data_user;
+    }
     public function findByEmail(string $email){
         $user       = $this->model->where('kontak.email',$email)->first();
         $data_user  = $this->__user($user);
@@ -39,6 +45,16 @@ class UserRepositoryImplement extends Eloquent implements UserRepository{
             'nama_depan'    => $user->nama['nama_depan'],
             'nama_belakang' => $user->nama['nama_belakang'],
             'gender'        => $user->gender
+        ];
+        return $data_user;
+    }
+    private function __userShort(object $user){
+        $data_user = [
+            'id'            => $user->_id,
+            'nama_depan'    => $user->nama['nama_depan'],
+            'nama_belakang' => $user->nama['nama_belakang'],
+            'nik'           => $user->nik,
+            'email'         => $user->kontak['email']
         ];
         return $data_user;
     }

@@ -37,11 +37,8 @@ class Controller extends BaseController
             'message' => $message,
             'data'    => $result,
         ];
-
-
         return response()->json($response, 401);
     }
-
 
     /**
      * return error response.
@@ -54,13 +51,9 @@ class Controller extends BaseController
             'success' => false,
             'message' => $error,
         ];
-
-
         if(!empty($errorMessages)){
             $response['data'] = $errorMessages;
         }
-
-
         return response()->json($response, $code);
     }
     public function validationError($error, $errorMessages = [], $code = 422)
@@ -69,13 +62,9 @@ class Controller extends BaseController
             'success' => false,
             'message' => $error,
         ];
-
-
         if(!empty($errorMessages)){
             $response['data'] = $errorMessages;
         }
-
-
         return response()->json($response, $code);
     }
 }

@@ -2,6 +2,7 @@
 
 namespace App\Repositories\Observation;
 
+use App\Http\Resources\ObservationResource;
 use LaravelEasyRepository\Implementations\Eloquent;
 use App\Models\Observation;
 
@@ -19,8 +20,16 @@ class ObservationRepositoryImplement extends Eloquent implements ObservationRepo
         $this->model = $model;
     }
     public function findById(string $observation_id){
-        $observation    = $this->model->where('_id', $observation_id)->first();
+        $observation    = $this->model->findOrFail($observation_id);
         $data           = $this->__observation($observation);
+        return $data;
+    }
+    public function observasiPasien(string $code, string $id_patient, int $limit){
+        $observation    = $this->model->where([
+            'coding.code'   => $code,
+            'id_pasien'     => $id_patient
+            ])->paginate($limit);
+        $data = ObservationResource::collection($observation);
         return $data;
     }
     private function __observation(object $observation){
@@ -28,7 +37,11 @@ class ObservationRepositoryImplement extends Eloquent implements ObservationRepo
             'id'            => $observation->_id,
             'value'         => $observation->value,
             'unit'          => $observation->unit,
-            'time'          => $observation->time
+            'time'          => $observation->time,
+            'id_pasien'     => $observation->id_pasien,
+            'id_pemeriksa'  => $observation->id_petugas,
+            'tempat_pemeriksaan'    => $observation->atm_sehat['owner'],
+            'atm_sehat'     => $observation->atm_sehat['code']
         ];
         return $data_user;
     }
