@@ -35,12 +35,19 @@ Route::middleware('auth:api')->group( function () {
 
     //client
     Route::get('client/mine', [\App\Http\Controllers\Api\v1\ClientController::class, 'mine']);
+    Route::get('client', [\App\Http\Controllers\Api\v1\ClientController::class, 'show']);
 
     //token
     Route::post('token/revoke', [AuthController::class,'revoke']);
 
+    //observation
+    Route::get('observations', [\App\Http\Controllers\Api\v1\ObservationController::class, 'index']);
+    Route::get('observation', [\App\Http\Controllers\Api\v1\DiastoleController::class, 'show']);
+    Route::get('observation', [\App\Http\Controllers\Api\v1\DiastoleController::class, 'show']);
+    Route::get('observation', [\App\Http\Controllers\Api\v1\DiastoleController::class, 'show']);
+
     //diastole
-    Route::get('observation/diastole/patient', [\App\Http\Controllers\Api\v1\ObservationController::class, 'get_systole']);
-    Route::get('observation/show', [\App\Http\Controllers\Api\v1\ObservationController::class, 'show']);
-    Route::post('observation/diastole', [\App\Http\Controllers\Api\v1\ObservationController::class, 'store']);
+    Route::get('diastole/patient', [\App\Http\Controllers\Api\v1\DiastoleController::class, 'get_systole']);
+    Route::get('diastole/show', [\App\Http\Controllers\Api\v1\DiastoleController::class, 'show']);
+    Route::post('diastole', [\App\Http\Controllers\Api\v1\DiastoleController::class, 'store']);
 });

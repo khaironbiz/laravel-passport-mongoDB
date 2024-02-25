@@ -25,7 +25,6 @@ class CodeRepositoryImplement extends Eloquent implements CodeRepository{
         }else{
             $data_code = $this->__code($code);
         }
-
         return $code;
     }
     private function __code(object $code){

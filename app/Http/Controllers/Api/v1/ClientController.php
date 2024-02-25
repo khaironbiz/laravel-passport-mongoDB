@@ -15,6 +15,24 @@ class ClientController extends Controller
         $client = Client::all();
         return $this->sendResponse(ClientResource::collection($client), 'Products retrieved successfully.');
     }
+    public function show(Request $request){
+        $id     = $request->client_id;
+        $client = Client::find($id);
+
+        if(empty($client)){
+            return $this->sendError('Client Not Found', $client);
+        }else{
+            $data_client = [
+                'id'        => $client->_id,
+                'name'      => $client->name,
+                'secret'    => $client->secret,
+                'redirect'  => $client->redirect,
+                'created_at'=> $client->created_at,
+                'updated_at'=> $client->updated_at
+            ];
+            return $this->sendResponse($data_client, 'success');
+        }
+    }
     public function store(Request $request){
         $client = new Client();
         $client_secret = md5(uniqid());

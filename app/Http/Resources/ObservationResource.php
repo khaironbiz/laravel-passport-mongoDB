@@ -15,26 +15,17 @@ class ObservationResource extends JsonResource
      */
     public function toArray($request)
     {
-        $user = User::findOrFail($this->id_pasien);
-        $petugas = User::findOrFail($this->id_petugas);
         return [
             'id'        => $this->id,
             'value'     => $this->value,
             'unit'      => $this->unit,
+            'id_pasien' => $this->id_pasien,
+            'id_petugas' => $this->id_petugas,
             'coding'    => $this->coding,
             'time'      => $this->time,
             'base_line' => $this->base_line,
             'interpretation' => $this->interpretation,
-            'pasien'    => [
-                'id'    => $this->id_pasien,
-                'nik'   => $user->nik,
-                'nama'  => $user->nama
-            ],
-            'petugas'    => [
-                'id'    => $petugas->_id,
-                'nik'   => $petugas->nik,
-                'nama'  => $petugas->nama
-            ],
+//
 
         ];
     }

@@ -24,6 +24,14 @@ class ObservationServiceImplement extends Service implements ObservationService{
     {
       $this->observationRepository = $observationRepository;
     }
+    public function index($limit){
+        try {
+            return $this->observationRepository->getAll($limit);
+        }catch (\Exception $exception){
+            Log::debug($exception->getMessage());
+            return [];
+        }
+    }
 
     public function simpan($data){
         $validator = Validator::make($data, [
