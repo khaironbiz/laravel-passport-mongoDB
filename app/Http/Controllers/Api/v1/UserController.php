@@ -4,7 +4,6 @@ namespace App\Http\Controllers\Api\v1;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Auth\RegisterRequest;
 use App\Models\User;
-
 use App\Services\User\UserService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -18,6 +17,7 @@ class UserController extends Controller
     public function __construct(UserService $userService) {
         $this->userService = $userService;
     }
+
     public function register(Request $request)
     {
         $validator = Validator::make($request->all(), [
