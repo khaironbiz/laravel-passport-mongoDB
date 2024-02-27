@@ -26,6 +26,13 @@ class DiastoleController extends Controller
     }
 
     public function show(Request $request){
+        $data       = $request->all();
+        $validator  = Validator::make($data, [
+            'observation_id'         => 'required',
+        ]);
+        if ($validator->fails()) {
+            return $this->validationError('Gagal Validasi', $validator->errors());
+        }
         $observation_id = $request->observation_id;
         $observation    = $this->observationService->showById($observation_id);
         if(empty($observation)){

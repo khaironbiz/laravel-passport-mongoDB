@@ -20,13 +20,17 @@ class ObservationRepositoryImplement extends Eloquent implements ObservationRepo
         $this->model = $model;
     }
 
-    public function getAll($limit){
-        $observation    = $this->model->paginate($limit);
+    public function index(){
+
+    }
+
+    public function getAll(int $limit){
+        $observation    = $this->model->orderBy('time', 'DESC')->paginate($limit);
         $data           = ObservationResource::collection($observation);
         $total_row      = $data->total();
         $result         = [
             'total'         => (int) $total_row,
-            'limit'         => (int) $limit,
+            'limit'         => $limit,
             'observation'   => $data
         ];
         return $result;
@@ -35,6 +39,19 @@ class ObservationRepositoryImplement extends Eloquent implements ObservationRepo
         $observation    = $this->model->findOrFail($observation_id);
         $data           = $this->__observation($observation);
         return $data;
+    }
+    public function byIdPasien(string $id_patient, int $limit){
+        $observation    = $this->model->where([
+            'id_pasien'     => $id_patient
+        ])->paginate($limit);
+        $data = ObservationResource::collection($observation);
+        $total_row      = $data->total();
+        $result         = [
+            'total'         => (int) $total_row,
+            'limit'         => $limit,
+            'observation'   => $data
+        ];
+        return $result;
     }
     public function observasiPasien(string $code, string $id_patient, int $limit){
         $observation    = $this->model->where([

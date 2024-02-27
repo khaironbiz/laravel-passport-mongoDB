@@ -71,6 +71,14 @@ class ObservationServiceImplement extends Service implements ObservationService{
             }
         }
     }
+    public function byIdPasien($id_pasien, $limit){
+        try {
+            return $this->observationRepository->byIdPasien($id_pasien, $limit);
+        }catch (\Exception $exception){
+            Log::debug($exception->getMessage());
+            return [];
+        }
+    }
     public function observasiPasien($code, $id_pasien, $limit){
         try {
             return $this->observationRepository->observasiPasien($code, $id_pasien, $limit);

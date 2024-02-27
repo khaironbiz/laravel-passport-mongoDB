@@ -43,9 +43,8 @@ Route::middleware('auth:api')->group( function () {
 
     //observation
     Route::get('observations', [\App\Http\Controllers\Api\v1\ObservationController::class, 'index']);
-    Route::get('observation', [\App\Http\Controllers\Api\v1\DiastoleController::class, 'show']);
-    Route::get('observation', [\App\Http\Controllers\Api\v1\DiastoleController::class, 'show']);
-    Route::get('observation', [\App\Http\Controllers\Api\v1\DiastoleController::class, 'show']);
+    Route::get('observation/show', [\App\Http\Controllers\Api\v1\ObservationController::class, 'show']);
+    Route::get('observation/patient', [\App\Http\Controllers\Api\v1\ObservationController::class, 'getByIdPasien']);
 
     //systole
     Route::get('systole/patient', [\App\Http\Controllers\Api\v1\SystoleController::class, 'getByIdPasien']);
@@ -56,4 +55,9 @@ Route::middleware('auth:api')->group( function () {
     Route::get('diastole/patient', [\App\Http\Controllers\Api\v1\DiastoleController::class, 'getByIdPasien']);
     Route::get('diastole/show', [\App\Http\Controllers\Api\v1\DiastoleController::class, 'show']);
     Route::post('diastole', [\App\Http\Controllers\Api\v1\DiastoleController::class, 'store']);
+
+    //Heart Rate
+    Route::get('heartRate/patient', [\App\Http\Controllers\Api\v1\HeartRateController::class, 'getByIdPasien']);
+    Route::get('heartRate/show', [\App\Http\Controllers\Api\v1\HeartRateController::class, 'show']);
+    Route::post('heartRate', [\App\Http\Controllers\Api\v1\HeartRateController::class, 'store']);
 });
