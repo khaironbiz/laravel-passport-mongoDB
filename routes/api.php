@@ -47,8 +47,13 @@ Route::middleware('auth:api')->group( function () {
     Route::get('observation', [\App\Http\Controllers\Api\v1\DiastoleController::class, 'show']);
     Route::get('observation', [\App\Http\Controllers\Api\v1\DiastoleController::class, 'show']);
 
+    //systole
+    Route::get('systole/patient', [\App\Http\Controllers\Api\v1\SystoleController::class, 'getByIdPasien']);
+    Route::get('systole/show', [\App\Http\Controllers\Api\v1\SystoleController::class, 'show']);
+    Route::post('systole', [\App\Http\Controllers\Api\v1\SystoleController::class, 'store']);
+
     //diastole
-    Route::get('diastole/patient', [\App\Http\Controllers\Api\v1\DiastoleController::class, 'get_systole']);
+    Route::get('diastole/patient', [\App\Http\Controllers\Api\v1\DiastoleController::class, 'getByIdPasien']);
     Route::get('diastole/show', [\App\Http\Controllers\Api\v1\DiastoleController::class, 'show']);
     Route::post('diastole', [\App\Http\Controllers\Api\v1\DiastoleController::class, 'store']);
 });

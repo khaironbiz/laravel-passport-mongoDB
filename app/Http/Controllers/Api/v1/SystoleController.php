@@ -11,7 +11,7 @@ use App\Services\User\UserService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
-class DiastoleController extends Controller
+class SystoleController extends Controller
 {
 
     private ObservationService $observationService;
@@ -61,7 +61,7 @@ class DiastoleController extends Controller
         if(empty($pasien)){
             return $this->sendError('Pasien tidak ditemukan');
         }
-        $code_systole   = "8462-4";
+        $code_systole   = "8480-6";
         $data           = $this->observationService->observasiPasien($code_systole, $id_pasien, $limit);
         $total_row      = $data['total'];
         $max_page       = round($total_row/$limit)+1 ;
@@ -92,7 +92,7 @@ class DiastoleController extends Controller
         }elseif (empty($petugas)){
             return $this->sendError("Petugas tidak ditemukan", $petugas);
         }
-        $code_diastole = "8462-4";
+        $code_diastole = "8480-6";
         $code       = $this->codeService->findByCode($code_diastole);
         $kit_code   = $petugas['kit']['kit_code'];
         $kit        = Kit::where('code', $kit_code)->first();

@@ -43,8 +43,7 @@ class ObservationServiceImplement extends Service implements ObservationService{
             'time'          => 'required',
             'coding'        => 'required',
             'category'      => 'required',
-            'base_line'     => 'required',
-            'interpretation'=> 'required',
+
 
         ]);
         if ($validator->fails()) {
