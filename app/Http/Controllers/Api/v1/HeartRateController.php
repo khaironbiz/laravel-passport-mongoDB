@@ -71,7 +71,13 @@ class HeartRateController extends Controller
         $code_systole   = "8867-4";
         $data           = $this->observationService->observasiPasien($code_systole, $id_pasien, $limit);
         $total_row      = $data['total'];
-        $max_page       = round($total_row/$limit)+1 ;
+        if(fmod($total_row, $limit)>0){
+            $max_page       = ($total_row/$limit)+1 ;
+        }else{
+            $max_page       = ($total_row/$limit);
+        }
+//        return $max_page;
+
         if($page > $max_page){
             return $this->sendError('page melebihi batas');
         }else{
