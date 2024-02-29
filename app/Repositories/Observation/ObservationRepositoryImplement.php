@@ -75,8 +75,11 @@ class ObservationRepositoryImplement extends Eloquent implements ObservationRepo
             'time'          => $observation->time,
             'id_pasien'     => $observation->id_pasien,
             'id_pemeriksa'  => $observation->id_petugas,
+            'coding'        => $observation->coding,
             'tempat_pemeriksaan'    => $observation->atm_sehat['owner'],
-            'atm_sehat'     => $observation->atm_sehat['code']
+            'atm_sehat'     => $observation->atm_sehat['code'],
+            'interpretation'=> $observation->interpretation,
+            'base_line'     => $observation->base_line
         ];
         return $data_user;
     }
