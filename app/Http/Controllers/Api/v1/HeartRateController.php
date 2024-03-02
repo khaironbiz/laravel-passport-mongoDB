@@ -86,6 +86,39 @@ class HeartRateController extends Controller
         }
 
     }
+    public function getBynik(Request $request){
+        $validator = Validator::make($request->all(), [
+            'nik' => 'required|numeric|digits:16',
+        ]);
+        if ($validator->fails()) {
+            return  $this->validationError("Gagal Validasi",$validator->errors());
+        }
+        $limit  = $request->limit< 1 ? 5 : $request->limit;
+        $page   = $request->page< 1 ? 1 : $request->page;
+        $nik    = (int) $request->nik;
+        $pasien         = User::where('nik', $nik)->first();
+        if(empty($pasien)){
+            return $this->sendError('Pasien tidak ditemukan');
+        }
+        $id_pasien      = $pasien->_id;
+        $code_systole   = "8867-4";
+        $data           = $this->observationService->observasiPasien($code_systole, $id_pasien, $limit);
+        $total_row      = $data['total'];
+        if(fmod($total_row, $limit)>0){
+            $max_page       = ($total_row/$limit)+1 ;
+        }else{
+            $max_page       = ($total_row/$limit);
+        }
+
+        if($page > $max_page){
+            return $this->sendError('page melebihi batas');
+        }else{
+            $data['current_page']   = (int) $page;
+            $data['max_page']       = (int) $max_page;
+            return $this->sendResponse($data,'success');
+        }
+
+    }
     public function store(Request $request){
         $data       = $request->all();
         $validator  = Validator::make($data, [

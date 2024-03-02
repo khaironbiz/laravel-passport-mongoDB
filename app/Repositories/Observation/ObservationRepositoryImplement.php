@@ -40,6 +40,7 @@ class ObservationRepositoryImplement extends Eloquent implements ObservationRepo
         $data           = $this->__observation($observation);
         return $data;
     }
+    //observasi by admin
     public function byIdPasien(string $id_patient, int $limit){
         $observation    = $this->model->where([
             'id_pasien'     => $id_patient
@@ -53,6 +54,7 @@ class ObservationRepositoryImplement extends Eloquent implements ObservationRepo
         ];
         return $result;
     }
+    //observasi by user
     public function observasiPasien(string $code, string $id_patient, int $limit){
         $observation    = $this->model->where([
             'coding.code'   => $code,

@@ -57,6 +57,7 @@ Route::middleware('auth:api')->group( function () {
     Route::post('diastole', [\App\Http\Controllers\Api\v1\DiastoleController::class, 'store']);
 
     //Heart Rate
+    Route::get('heartRate/patient/nik', [\App\Http\Controllers\Api\v1\HeartRateController::class, 'getBynik']);
     Route::get('heartRate/patient', [\App\Http\Controllers\Api\v1\HeartRateController::class, 'getByIdPasien']);
     Route::get('heartRate/show', [\App\Http\Controllers\Api\v1\HeartRateController::class, 'show']);
     Route::post('heartRate', [\App\Http\Controllers\Api\v1\HeartRateController::class, 'store']);
