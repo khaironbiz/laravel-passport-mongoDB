@@ -51,6 +51,20 @@ class UserServiceImplement extends Service implements UserService{
             return [];
         }
     }
+    public function usia($tgl_lahir)
+    {
+        $birthDate      = new \DateTime($tgl_lahir);
+        $today          = new \DateTime("today");
+        $y              = $today->diff($birthDate)->y;
+        $m              = $today->diff($birthDate)->m;
+        $d              = $today->diff($birthDate)->d;
+        $usia           = [
+            'tahun'         => $y,
+            'bulan'         => $m,
+            'hari'          => $d
+        ];
+        return response($usia);
+    }
 
     // Define your custom methods :)
 }

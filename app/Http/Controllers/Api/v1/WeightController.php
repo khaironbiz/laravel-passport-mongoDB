@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api\v1;
 
 use App\Http\Controllers\Controller;
 use App\Models\Kit;
+use App\Models\Observation;
 use App\Models\User;
 use App\Services\Code\CodeService;
 use App\Services\Observation\ObservationService;
@@ -11,7 +12,9 @@ use App\Services\User\UserService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
-class SystoleController extends Controller
+class WeightController extends Controller
+
+
 {
 
     private ObservationService $observationService;
@@ -68,9 +71,10 @@ class SystoleController extends Controller
         if(empty($pasien)){
             return $this->sendError('Pasien tidak ditemukan');
         }
-        $code_systole   = "8480-6";
-        $data           = $this->observationService->observasiPasien($code_systole, $id_pasien, $limit, $page);
-        $max_page       = $data['max_page'];
+        $code_observation   = "29463-7";
+        $data               = $this->observationService->observasiPasien($code_observation, $id_pasien, $limit, $page);
+        $max_page           = $data['max_page'];
+
         if($page > $max_page){
             return $this->sendError('page melebihi batas');
         }else{
@@ -88,15 +92,15 @@ class SystoleController extends Controller
         }
         $limit  = $request->limit< 1 ? 5 : $request->limit;
         $page   = $request->page< 1 ? 1 : $request->page;
-        $nik            = (int) $request->nik;
+        $nik    = (int) $request->nik;
         $pasien         = User::where('nik', $nik)->first();
         if(empty($pasien)){
             return $this->sendError('Pasien tidak ditemukan');
         }
-        $id_pasien      = $pasien->_id;
-        $code_systole   = "8480-6";
-        $data           = $this->observationService->observasiPasien($code_systole, $id_pasien, $limit, $page);
-        $max_page       = $data['max_page'];
+        $id_pasien          = $pasien->_id;
+        $code_observation   = "29463-7";
+        $data               = $this->observationService->observasiPasien($code_observation, $id_pasien, $limit, $page);
+        $max_page           = $data['max_page'];
 
         if($page > $max_page){
             return $this->sendError('page melebihi batas');
@@ -106,6 +110,7 @@ class SystoleController extends Controller
         }
 
     }
+
     public function store(Request $request){
         $data       = $request->all();
         $validator  = Validator::make($data, [
@@ -139,10 +144,10 @@ class SystoleController extends Controller
             'usia'      => $usia_pasien->original,
             'parent'    => $pasien->parent
         ];
-        $code_systole = "8480-6";
-        $code       = $this->codeService->findByCode($code_systole);
-        $kit_code   = $petugas['kit']['kit_code'];
-        $kit        = Kit::where('code', $kit_code)->first();
+        $code_observation   = "29463-7";
+        $code               = $this->codeService->findByCode($code_observation);
+        $kit_code           = $petugas['kit']['kit_code'];
+        $kit                = Kit::where('code', $kit_code)->first();
         $atm_sehat  = [
             'code'  => $kit->code,
             'name'  => $kit->name,
@@ -172,7 +177,16 @@ class SystoleController extends Controller
         }else{
             return $this->sendResponse($create_observation, 'success');
         }
+    }
 
-
+    public function null_pasien(){
+        $time           = time()-(15*(24*60*60));
+        $pasien         = Observation::where('time','>', $time)->orderBy('time', 'DESC')->get();
+        $data_pbservasi = [
+            'count'     => $pasien->count(),
+            'data'      => $pasien
+        ];
+        return $data_pbservasi;
     }
 }
+

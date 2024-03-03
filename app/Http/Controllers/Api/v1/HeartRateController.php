@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api\v1;
 
 use App\Http\Controllers\Controller;
 use App\Models\Kit;
+use App\Models\Observation;
 use App\Models\User;
 use App\Services\Code\CodeService;
 use App\Services\Observation\ObservationService;
@@ -68,15 +69,9 @@ class HeartRateController extends Controller
         if(empty($pasien)){
             return $this->sendError('Pasien tidak ditemukan');
         }
-        $code_systole   = "8867-4";
-        $data           = $this->observationService->observasiPasien($code_systole, $id_pasien, $limit);
-        $total_row      = $data['total'];
-        if(fmod($total_row, $limit)>0){
-            $max_page       = ($total_row/$limit)+1 ;
-        }else{
-            $max_page       = ($total_row/$limit);
-        }
-//        return $max_page;
+        $code_hr   = "8867-4";
+        $data           = $this->observationService->observasiPasien($code_hr, $id_pasien, $limit, $page);
+        $max_page       = $data['max_page'];
 
         if($page > $max_page){
             return $this->sendError('page melebihi batas');
@@ -102,23 +97,18 @@ class HeartRateController extends Controller
         }
         $id_pasien      = $pasien->_id;
         $code_systole   = "8867-4";
-        $data           = $this->observationService->observasiPasien($code_systole, $id_pasien, $limit);
-        $total_row      = $data['total'];
-        if(fmod($total_row, $limit)>0){
-            $max_page       = ($total_row/$limit)+1 ;
-        }else{
-            $max_page       = ($total_row/$limit);
-        }
+        $data           = $this->observationService->observasiPasien($code_systole, $id_pasien, $limit, $page);
+        $max_page       = $data['max_page'];
 
         if($page > $max_page){
             return $this->sendError('page melebihi batas');
         }else{
             $data['current_page']   = (int) $page;
-            $data['max_page']       = (int) $max_page;
             return $this->sendResponse($data,'success');
         }
 
     }
+
     public function store(Request $request){
         $data       = $request->all();
         $validator  = Validator::make($data, [
@@ -138,10 +128,29 @@ class HeartRateController extends Controller
         }elseif (empty($petugas)){
             return $this->sendError("Petugas tidak ditemukan", $petugas);
         }
-        $code_diastole = "8867-4";
-        $code       = $this->codeService->findByCode($code_diastole);
+        if($pasien->lahir != null){
+            $usia_pasien    = $this->userService->usia($pasien->lahir['tanggal']);
+        }else{
+            $usia_pasien = null;
+        }
+        $data_pasien    = [
+            'id'        => $pasien->_id,
+            'nama'      => $pasien->nama,
+            'gender'    => $pasien->gender,
+            'nik'       => (int) $pasien->nik,
+            'lahir'     => $pasien->lahir,
+            'usia'      => $usia_pasien->original,
+            'parent'    => $pasien->parent
+        ];
+        $code_hr = "8867-4";
+        $code       = $this->codeService->findByCode($code_hr);
         $kit_code   = $petugas['kit']['kit_code'];
         $kit        = Kit::where('code', $kit_code)->first();
+        $atm_sehat  = [
+            'code'  => $kit->code,
+            'name'  => $kit->name,
+            'owner' => $kit->owner,
+        ];
         $coding = [
             'code'      => $code->code,
             'display'   => $code->display,
@@ -151,8 +160,9 @@ class HeartRateController extends Controller
             'value'         => $data['value'],
             'unit'          => $code['unit'],
             'id_pasien'     => $id_pasien,
+            'pasien'        => $data_pasien,
             'id_petugas'    => $id_petugas,
-            'atm_sehat'     => $petugas['kit'],
+            'atm_sehat'     => $atm_sehat,
             'time'          => time(),
             'coding'        => $coding,
             'category'      => $code['category'],
@@ -165,7 +175,15 @@ class HeartRateController extends Controller
         }else{
             return $this->sendResponse($create_observation, 'success');
         }
+    }
 
-
+    public function null_pasien(){
+        $time           = time()-(15*(24*60*60));
+        $pasien         = Observation::where('time','>', $time)->orderBy('time', 'DESC')->get();
+        $data_pbservasi = [
+            'count'     => $pasien->count(),
+            'data'      => $pasien
+        ];
+        return $data_pbservasi;
     }
 }

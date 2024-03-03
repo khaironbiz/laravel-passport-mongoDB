@@ -42,9 +42,9 @@ class ObservationRepositoryImplement extends Eloquent implements ObservationRepo
     }
     //observasi by admin
     public function byIdPasien(string $id_patient, int $limit){
-        $observation    = $this->model->where([
+        $observation        = $this->model->where([
             'id_pasien'     => $id_patient
-        ])->paginate($limit);
+        ])->orderBy('time', 'DESC')->paginate($limit);
         $data = ObservationResource::collection($observation);
         $total_row      = $data->total();
         $result         = [
@@ -55,36 +55,37 @@ class ObservationRepositoryImplement extends Eloquent implements ObservationRepo
         return $result;
     }
     //observasi by user
-    public function observasiPasien(string $code, string $id_patient, int $limit){
+    public function observasiPasien(string $code, string $id_patient, int $limit, int $page){
         $observation    = $this->model->where([
             'coding.code'   => $code,
             'id_pasien'     => $id_patient
-            ])->paginate($limit);
-        $data = ObservationResource::collection($observation);
+            ])->orderBy('time', 'DESC')->paginate($limit);
+        $data           = ObservationResource::collection($observation);
         $total_row      = $data->total();
+        $max_page       = ceil($total_row/$limit);
         $result         = [
             'total'         => (int) $total_row,
             'limit'         => $limit,
+            'max_page'      => $max_page,
+            'current_page'  => $page,
             'observation'   => $data
         ];
         return $result;
     }
     private function __observation(object $observation){
         $data_user = [
-            'id'            => $observation->_id,
-            'value'         => $observation->value,
-            'unit'          => $observation->unit,
-            'time'          => $observation->time,
-            'id_pasien'     => $observation->id_pasien,
-            'id_pemeriksa'  => $observation->id_petugas,
-            'coding'        => $observation->coding,
+            'id'                    => $observation->_id,
+            'value'                 => $observation->value,
+            'unit'                  => $observation->unit,
+            'time'                  => $observation->time,
+            'id_pasien'             => $observation->id_pasien,
+            'id_pemeriksa'          => $observation->id_petugas,
+            'coding'                => $observation->coding,
             'tempat_pemeriksaan'    => $observation->atm_sehat['owner'],
-            'atm_sehat'     => $observation->atm_sehat['code'],
-            'interpretation'=> $observation->interpretation,
-            'base_line'     => $observation->base_line
+            'atm_sehat'             => $observation->atm_sehat['code'],
+            'interpretation'        => $observation->interpretation,
+            'base_line'             => $observation->base_line
         ];
         return $data_user;
     }
-
-    // Write something awesome :)
 }

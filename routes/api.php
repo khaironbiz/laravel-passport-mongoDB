@@ -20,8 +20,8 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 Route::post('register', [\App\Http\Controllers\Api\v1\UserController::class, 'register']);
-Route::post('login', [AuthController::class, 'login']);
-Route::get('login', [AuthController::class, 'notAuthorised'])->name('login');
+Route::post('login', [\App\Http\Controllers\Api\v1\AuthController::class, 'login']);
+Route::get('login', [\App\Http\Controllers\Api\v1\AuthController::class, 'notAuthorised'])->name('auth.login');
 Route::post('create', [\App\Http\Controllers\Api\v1\ClientController::class, 'store']);
 
 Route::middleware('auth:api')->group( function () {
@@ -46,12 +46,15 @@ Route::middleware('auth:api')->group( function () {
     Route::get('observation/show', [\App\Http\Controllers\Api\v1\ObservationController::class, 'show']);
     Route::get('observation/patient', [\App\Http\Controllers\Api\v1\ObservationController::class, 'getByIdPasien']);
 
+
     //systole
+    Route::get('systole/patient/nik', [\App\Http\Controllers\Api\v1\SystoleController::class, 'getBynik']);
     Route::get('systole/patient', [\App\Http\Controllers\Api\v1\SystoleController::class, 'getByIdPasien']);
     Route::get('systole/show', [\App\Http\Controllers\Api\v1\SystoleController::class, 'show']);
     Route::post('systole', [\App\Http\Controllers\Api\v1\SystoleController::class, 'store']);
 
     //diastole
+    Route::get('diastole/patient/nik', [\App\Http\Controllers\Api\v1\DiastoleController::class, 'getBynik']);
     Route::get('diastole/patient', [\App\Http\Controllers\Api\v1\DiastoleController::class, 'getByIdPasien']);
     Route::get('diastole/show', [\App\Http\Controllers\Api\v1\DiastoleController::class, 'show']);
     Route::post('diastole', [\App\Http\Controllers\Api\v1\DiastoleController::class, 'store']);
@@ -61,4 +64,18 @@ Route::middleware('auth:api')->group( function () {
     Route::get('heartRate/patient', [\App\Http\Controllers\Api\v1\HeartRateController::class, 'getByIdPasien']);
     Route::get('heartRate/show', [\App\Http\Controllers\Api\v1\HeartRateController::class, 'show']);
     Route::post('heartRate', [\App\Http\Controllers\Api\v1\HeartRateController::class, 'store']);
+    Route::get('nullPasien', [\App\Http\Controllers\Api\v1\HeartRateController::class, 'null_pasien']);
+
+    //Body Temperature
+    Route::get('bodyTemperature/patient/nik', [\App\Http\Controllers\Api\v1\BodyTemperature::class, 'getBynik']);
+    Route::get('bodyTemperature/patient', [\App\Http\Controllers\Api\v1\BodyTemperature::class, 'getByIdPasien']);
+    Route::get('bodyTemperature/show', [\App\Http\Controllers\Api\v1\BodyTemperature::class, 'show']);
+    Route::post('bodyTemperature', [\App\Http\Controllers\Api\v1\BodyTemperature::class, 'store']);
+
+    //Body Weight
+    Route::get('weight/patient/nik', [\App\Http\Controllers\Api\v1\WeightController::class, 'getBynik']);
+    Route::get('weight/patient', [\App\Http\Controllers\Api\v1\WeightController::class, 'getByIdPasien']);
+    Route::get('weight/show', [\App\Http\Controllers\Api\v1\WeightController::class, 'show']);
+    Route::post('weight', [\App\Http\Controllers\Api\v1\WeightController::class, 'store']);
+
 });

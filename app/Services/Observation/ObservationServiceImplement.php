@@ -38,13 +38,12 @@ class ObservationServiceImplement extends Service implements ObservationService{
             'value'         => 'required|numeric',
             'unit'          => 'required',
             'id_pasien'     => 'required|string|max:255',
+            'pasien'        => 'required',
             'id_petugas'    => 'required|string|max:255',
             'atm_sehat'     => 'required',
             'time'          => 'required',
             'coding'        => 'required',
             'category'      => 'required',
-
-
         ]);
         if ($validator->fails()) {
             Log::debug($validator->fails());
@@ -54,6 +53,7 @@ class ObservationServiceImplement extends Service implements ObservationService{
                 'value'         => $data['value'],
                 'unit'          => $data['unit'],
                 'id_pasien'     => $data['id_pasien'],
+                'pasien'        => $data['pasien'],
                 'id_petugas'    => $data['id_petugas'],
                 'atm_sehat'     => $data['atm_sehat'],
                 'time'          => $data['time'],
@@ -79,9 +79,9 @@ class ObservationServiceImplement extends Service implements ObservationService{
             return [];
         }
     }
-    public function observasiPasien($code, $id_pasien, $limit){
+    public function observasiPasien($code, $id_pasien, $limit, $page){
         try {
-            return $this->observationRepository->observasiPasien($code, $id_pasien, $limit);
+            return $this->observationRepository->observasiPasien($code, $id_pasien, $limit, $page);
         }catch (\Exception $exception){
             Log::debug($exception->getMessage());
             return [];

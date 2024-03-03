@@ -69,13 +69,42 @@ class DiastoleController extends Controller
             return $this->sendError('Pasien tidak ditemukan');
         }
         $code_systole   = "8462-4";
-        $data           = $this->observationService->observasiPasien($code_systole, $id_pasien, $limit);
+        $data           = $this->observationService->observasiPasien($code_systole, $id_pasien, $limit, $page);
         $total_row      = $data['total'];
-        $max_page       = round($total_row/$limit)+1 ;
+        if(fmod($total_row, $limit)>0){
+            $max_page       = ($total_row/$limit)+1 ;
+        }else{
+            $max_page       = ($total_row/$limit);
+        }
+
         if($page > $max_page){
             return $this->sendError('page melebihi batas');
         }else{
-            $data['current_page']   = (int) $page;
+            return $this->sendResponse($data,'success');
+        }
+
+    }
+    public function getBynik(Request $request){
+        $validator = Validator::make($request->all(), [
+            'nik' => 'required|numeric|digits:16',
+        ]);
+        if ($validator->fails()) {
+            return  $this->validationError("Gagal Validasi",$validator->errors());
+        }
+        $limit          = $request->limit< 1 ? 5 : $request->limit;
+        $page           = $request->page< 1 ? 1 : $request->page;
+        $nik            = (int) $request->nik;
+        $pasien         = User::where('nik', $nik)->first();
+        if(empty($pasien)){
+            return $this->sendError('Pasien tidak ditemukan');
+        }
+        $id_pasien      = $pasien->_id;
+        $code_systole   = "8462-4";
+        $data           = $this->observationService->observasiPasien($code_systole, $id_pasien, $limit, $page);
+        $max_page       = $data['max_page'];
+        if($page > $max_page){
+            return $this->sendError('page melebihi batas');
+        }else{
             return $this->sendResponse($data,'success');
         }
 
@@ -99,10 +128,29 @@ class DiastoleController extends Controller
         }elseif (empty($petugas)){
             return $this->sendError("Petugas tidak ditemukan", $petugas);
         }
+        if($pasien->lahir != null){
+            $usia_pasien    = $this->userService->usia($pasien->lahir['tanggal']);
+        }else{
+            $usia_pasien = null;
+        }
+        $data_pasien    = [
+            'id'        => $pasien->_id,
+            'nama'      => $pasien->nama,
+            'gender'    => $pasien->gender,
+            'nik'       => (int) $pasien->nik,
+            'lahir'     => $pasien->lahir,
+            'usia'      => $usia_pasien->original,
+            'parent'    => $pasien->parent
+        ];
         $code_diastole = "8462-4";
         $code       = $this->codeService->findByCode($code_diastole);
         $kit_code   = $petugas['kit']['kit_code'];
         $kit        = Kit::where('code', $kit_code)->first();
+        $atm_sehat  = [
+            'code'  => $kit->code,
+            'name'  => $kit->name,
+            'owner' => $kit->owner,
+        ];
         $coding = [
             'code'      => $code->code,
             'display'   => $code->display,
@@ -112,8 +160,9 @@ class DiastoleController extends Controller
             'value'         => $data['value'],
             'unit'          => $code['unit'],
             'id_pasien'     => $id_pasien,
+            'pasien'        => $data_pasien,
             'id_petugas'    => $id_petugas,
-            'atm_sehat'     => $petugas['kit'],
+            'atm_sehat'     => $atm_sehat,
             'time'          => time(),
             'coding'        => $coding,
             'category'      => $code['category'],
@@ -126,7 +175,6 @@ class DiastoleController extends Controller
         }else{
             return $this->sendResponse($create_observation, 'success');
         }
-
-
     }
+
 }

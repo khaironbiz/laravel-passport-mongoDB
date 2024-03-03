@@ -18,13 +18,12 @@ class AuthController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function notAuthorised(){
-        $status_code = 499;
+        $status_code = 401;
         $data = [
             'status_code'   => $status_code,
-            'message'       => 'Token Invalid ',
+            'message'       => 'Invalid Token',
         ];
         return response()->json($data,$status_code);
-
     }
 
 

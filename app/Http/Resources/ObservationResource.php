@@ -20,6 +20,7 @@ class ObservationResource extends JsonResource
             'value'     => $this->value,
             'unit'      => $this->unit,
             'id_pasien' => $this->id_pasien,
+            'pasien'    => $this->pasien,
             'id_petugas' => $this->id_petugas,
             'coding'    => $this->coding,
             'time'      => $this->time,
