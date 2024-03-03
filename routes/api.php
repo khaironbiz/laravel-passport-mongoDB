@@ -110,4 +110,18 @@ Route::middleware('auth:api')->group( function () {
     Route::post('hemoGlobin', [\App\Http\Controllers\Api\v1\HemoGlobinController::class, 'store']);
     Route::get('hemoGlobin/unitNull', [\App\Http\Controllers\Api\v1\HemoGlobinController::class, 'null_unit']);
 
+    //Urate
+    Route::get('urate/patient/nik', [\App\Http\Controllers\Api\v1\UrateController::class, 'getBynik']);
+    Route::get('urate/patient', [\App\Http\Controllers\Api\v1\UrateController::class, 'getByIdPasien']);
+    Route::get('urate/show', [\App\Http\Controllers\Api\v1\UrateController::class, 'show']);
+    Route::post('urate', [\App\Http\Controllers\Api\v1\UrateController::class, 'store']);
+    Route::get('urate/unitNull', [\App\Http\Controllers\Api\v1\UrateController::class, 'null_unit']);
+
+    //Cholesterol
+    Route::get('cholesterol/patient/nik', [\App\Http\Controllers\Api\v1\CholesterolController::class, 'getBynik']);
+    Route::get('cholesterol/patient', [\App\Http\Controllers\Api\v1\CholesterolController::class, 'getByIdPasien']);
+    Route::get('cholesterol/show', [\App\Http\Controllers\Api\v1\CholesterolController::class, 'show']);
+    Route::post('cholesterol', [\App\Http\Controllers\Api\v1\CholesterolController::class, 'store']);
+    Route::get('cholesterol/unitNull', [\App\Http\Controllers\Api\v1\CholesterolController::class, 'null_unit']);
+
 });

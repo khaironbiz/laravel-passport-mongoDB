@@ -12,7 +12,7 @@ use App\Services\User\UserService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
-class HemoGlobinController extends Controller
+class UrateController extends Controller
 {
     private ObservationService $observationService;
     private UserService $userService;
@@ -68,7 +68,7 @@ class HemoGlobinController extends Controller
         if(empty($pasien)){
             return $this->sendError('Pasien tidak ditemukan');
         }
-        $code_observation   = "718-7";
+        $code_observation   = "3084-1";
         $data               = $this->observationService->observasiPasien($code_observation, $id_pasien, $limit, $page);
         $max_page           = $data['max_page'];
 
@@ -95,7 +95,7 @@ class HemoGlobinController extends Controller
             return $this->sendError('Pasien tidak ditemukan');
         }
         $id_pasien          = $pasien->_id;
-        $code_observation   = "718-7";
+        $code_observation   = "3084-1";
         $data               = $this->observationService->observasiPasien($code_observation, $id_pasien, $limit, $page);
         $max_page           = $data['max_page'];
 
@@ -111,7 +111,7 @@ class HemoGlobinController extends Controller
     public function store(Request $request){
         $data       = $request->all();
         $validator  = Validator::make($data, [
-            'value'         => 'required|numeric|between:1,50',
+            'value'         => 'required|numeric|between:1,100',
             'id_pasien'     => 'required|string|max:255',
             'id_petugas'    => 'required|string|max:255',
         ]);
@@ -141,7 +141,7 @@ class HemoGlobinController extends Controller
             'usia'      => $usia_pasien->original,
             'parent'    => $pasien->parent
         ];
-        $code_observation   = "718-7";
+        $code_observation   = "3084-1";
         $code               = $this->codeService->findByCode($code_observation);
         $kit_code           = $petugas['kit']['kit_code'];
         $kit                = Kit::where('code', $kit_code)->first();
@@ -195,3 +195,4 @@ class HemoGlobinController extends Controller
         return $data_pbservasi;
     }
 }
+
