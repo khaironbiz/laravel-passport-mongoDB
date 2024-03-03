@@ -78,4 +78,36 @@ Route::middleware('auth:api')->group( function () {
     Route::get('weight/show', [\App\Http\Controllers\Api\v1\WeightController::class, 'show']);
     Route::post('weight', [\App\Http\Controllers\Api\v1\WeightController::class, 'store']);
 
+    //Body Height
+    Route::get('height/patient/nik', [\App\Http\Controllers\Api\v1\HeightController::class, 'getBynik']);
+    Route::get('height/patient', [\App\Http\Controllers\Api\v1\HeightController::class, 'getByIdPasien']);
+    Route::get('height/show', [\App\Http\Controllers\Api\v1\HeightController::class, 'show']);
+    Route::post('height', [\App\Http\Controllers\Api\v1\HeightController::class, 'store']);
+
+    //BMI
+    Route::get('bmi/patient/nik', [\App\Http\Controllers\Api\v1\BmiController::class, 'getBynik']);
+    Route::get('bmi/patient', [\App\Http\Controllers\Api\v1\BmiController::class, 'getByIdPasien']);
+    Route::get('bmi/show', [\App\Http\Controllers\Api\v1\BmiController::class, 'show']);
+    Route::post('bmi', [\App\Http\Controllers\Api\v1\BmiController::class, 'store']);
+
+    //Glucose
+    Route::get('glucose/patient/nik', [\App\Http\Controllers\Api\v1\GlucoseController::class, 'getBynik']);
+    Route::get('glucose/patient', [\App\Http\Controllers\Api\v1\GlucoseController::class, 'getByIdPasien']);
+    Route::get('glucose/show', [\App\Http\Controllers\Api\v1\GlucoseController::class, 'show']);
+    Route::post('glucose', [\App\Http\Controllers\Api\v1\GlucoseController::class, 'store']);
+
+    //Oxygen Saturation
+    Route::get('oxygenSaturation/patient/nik', [\App\Http\Controllers\Api\v1\OxygenSaturationController::class, 'getBynik']);
+    Route::get('oxygenSaturation/patient', [\App\Http\Controllers\Api\v1\OxygenSaturationController::class, 'getByIdPasien']);
+    Route::get('oxygenSaturation/show', [\App\Http\Controllers\Api\v1\OxygenSaturationController::class, 'show']);
+    Route::post('oxygenSaturation', [\App\Http\Controllers\Api\v1\OxygenSaturationController::class, 'store']);
+    Route::get('oxygenSaturation/unitNull', [\App\Http\Controllers\Api\v1\OxygenSaturationController::class, 'null_unit']);
+
+    //Hemo Globin
+    Route::get('hemoGlobin/patient/nik', [\App\Http\Controllers\Api\v1\HemoGlobinController::class, 'getBynik']);
+    Route::get('hemoGlobin/patient', [\App\Http\Controllers\Api\v1\HemoGlobinController::class, 'getByIdPasien']);
+    Route::get('hemoGlobin/show', [\App\Http\Controllers\Api\v1\HemoGlobinController::class, 'show']);
+    Route::post('hemoGlobin', [\App\Http\Controllers\Api\v1\HemoGlobinController::class, 'store']);
+    Route::get('hemoGlobin/unitNull', [\App\Http\Controllers\Api\v1\HemoGlobinController::class, 'null_unit']);
+
 });

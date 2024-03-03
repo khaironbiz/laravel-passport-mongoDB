@@ -12,7 +12,7 @@ use App\Services\User\UserService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
-class BodyTemperature extends Controller
+class OxygenSaturationController extends Controller
 {
     private ObservationService $observationService;
     private UserService $userService;
@@ -68,7 +68,7 @@ class BodyTemperature extends Controller
         if(empty($pasien)){
             return $this->sendError('Pasien tidak ditemukan');
         }
-        $code_observation   = "8310-5";
+        $code_observation   = "59408-5";
         $data               = $this->observationService->observasiPasien($code_observation, $id_pasien, $limit, $page);
         $max_page           = $data['max_page'];
 
@@ -95,7 +95,7 @@ class BodyTemperature extends Controller
             return $this->sendError('Pasien tidak ditemukan');
         }
         $id_pasien          = $pasien->_id;
-        $code_observation   = "8310-5";
+        $code_observation   = "59408-5";
         $data               = $this->observationService->observasiPasien($code_observation, $id_pasien, $limit, $page);
         $max_page           = $data['max_page'];
 
@@ -107,10 +107,11 @@ class BodyTemperature extends Controller
         }
 
     }
+
     public function store(Request $request){
         $data       = $request->all();
         $validator  = Validator::make($data, [
-            'value'         => 'required|numeric',
+            'value'         => 'required|numeric|between:10,100',
             'id_pasien'     => 'required|string|max:255',
             'id_petugas'    => 'required|string|max:255',
         ]);
@@ -140,7 +141,7 @@ class BodyTemperature extends Controller
             'usia'      => $usia_pasien->original,
             'parent'    => $pasien->parent
         ];
-        $code_observation   = "8310-5";
+        $code_observation   = "59408-5";
         $code               = $this->codeService->findByCode($code_observation);
         $kit_code           = $petugas['kit']['kit_code'];
         $kit                = Kit::where('code', $kit_code)->first();
@@ -174,6 +175,7 @@ class BodyTemperature extends Controller
             return $this->sendResponse($create_observation, 'success');
         }
     }
+
     public function null_pasien(){
         $time           = time()-(15*(24*60*60));
         $pasien         = Observation::where('time','>', $time)->orderBy('time', 'DESC')->get();
@@ -183,4 +185,14 @@ class BodyTemperature extends Controller
         ];
         return $data_pbservasi;
     }
+    public function null_unit(){
+
+        $pasien         = Observation::where('unit.display',null)->orderBy('time', 'DESC')->get();
+        $data_pbservasi = [
+            'count'     => $pasien->count(),
+            'data'      => $pasien
+        ];
+        return $data_pbservasi;
+    }
 }
+

@@ -13,8 +13,6 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
 class WeightController extends Controller
-
-
 {
 
     private ObservationService $observationService;

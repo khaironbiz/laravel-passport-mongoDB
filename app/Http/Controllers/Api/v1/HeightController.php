@@ -12,8 +12,10 @@ use App\Services\User\UserService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
-class BodyTemperature extends Controller
+class HeightController extends Controller
+
 {
+
     private ObservationService $observationService;
     private UserService $userService;
 
@@ -68,7 +70,7 @@ class BodyTemperature extends Controller
         if(empty($pasien)){
             return $this->sendError('Pasien tidak ditemukan');
         }
-        $code_observation   = "8310-5";
+        $code_observation   = "8302-2";
         $data               = $this->observationService->observasiPasien($code_observation, $id_pasien, $limit, $page);
         $max_page           = $data['max_page'];
 
@@ -95,7 +97,7 @@ class BodyTemperature extends Controller
             return $this->sendError('Pasien tidak ditemukan');
         }
         $id_pasien          = $pasien->_id;
-        $code_observation   = "8310-5";
+        $code_observation   = "8302-2";
         $data               = $this->observationService->observasiPasien($code_observation, $id_pasien, $limit, $page);
         $max_page           = $data['max_page'];
 
@@ -107,6 +109,7 @@ class BodyTemperature extends Controller
         }
 
     }
+
     public function store(Request $request){
         $data       = $request->all();
         $validator  = Validator::make($data, [
@@ -140,7 +143,7 @@ class BodyTemperature extends Controller
             'usia'      => $usia_pasien->original,
             'parent'    => $pasien->parent
         ];
-        $code_observation   = "8310-5";
+        $code_observation   = "8302-2";
         $code               = $this->codeService->findByCode($code_observation);
         $kit_code           = $petugas['kit']['kit_code'];
         $kit                = Kit::where('code', $kit_code)->first();
@@ -174,6 +177,7 @@ class BodyTemperature extends Controller
             return $this->sendResponse($create_observation, 'success');
         }
     }
+
     public function null_pasien(){
         $time           = time()-(15*(24*60*60));
         $pasien         = Observation::where('time','>', $time)->orderBy('time', 'DESC')->get();
